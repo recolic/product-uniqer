@@ -7,10 +7,10 @@ import numpy as np
 from io import StringIO
 import sys
 
-if len(sys.argv) < 1:
+if len(sys.argv) < 2:
     print('Usage: ./main.py <CsvToDeal>')
     exit(1)
-fname = sys.argv[0]
+fname = sys.argv[1]
 index_part_name = 0
 index_material_name = 1
 index_amount = 6
@@ -31,7 +31,7 @@ contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
 contMat = np.mat(contArr)
 
 # Clean junk words
-cleanedMat = np.matrix([[]])
+cleanedMat = np.matrix([[]], dtype=str)
 for line in contArr:
     for word in junk_material_words:
         if word in line[index_material_name]:
@@ -44,8 +44,8 @@ contArr = np.array(cleanedMat)
 contMat = cleanedMat
 
 # Pick these ignored materials out
-toSumMat = np.matrix([[]])
-ignoredMat = np.matrix([[]])
+toSumMat = np.matrix([[]], dtype=str)
+ignoredMat = np.matrix([[]], dtype=str)
 for line in contArr:
     ignored = False
     for keyword in ignored_material_keywords:
@@ -86,12 +86,13 @@ for line in np.array(sumedMaterialListMat).tolist():
 
 # Add ignored materials...
 for line in np.array(ignoredMat).tolist():
-    newLine = [line[index_material_name] + '数量' + line[index_amount]]
-    newLine.extend(['' for i in range(max_args + 4)])
+    newLine = [line[index_material_name] + ' 数量' + line[index_amount]]
+    newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
+    newLine.extend(['','','','']) # Warning: if outputMaterialSheet is edited, you must edit this line.
     newMaterialList.append(newLine)
 
 # Done.
-outputMaterialMat = np.mat(newMaterialList)
+outputMaterialMat = np.mat(newMaterialList, dtype=str)
 outputPartMat = sumedPartListMat
 
 # Make output sheet head
@@ -113,6 +114,5 @@ outputPartMat = npmat_appendrow(npmat_appendrow(partLine1, partLine2), outputPar
 # Ok. Enjoy!
 materialFileName = fname[:-4] + '-material.csv'
 partFileName = fname[:-4] + '-part.csv'
-np.savetxt(materialFileName, outputMaterialMat, delimiter=',')
-np.savetxt(partFileName, outputPartMat, delimiter=',')
-
+np.savetxt(materialFileName, outputMaterialMat, fmt='%s', delimiter=',')
+np.savetxt(partFileName, outputPartMat, fmt='%s', delimiter=',')

@@ -34,7 +34,7 @@ def __uniqer(matToUniq, sumedIndexes):
             if sumedIndex == -1:
                 sumedIndex = index
                 continue
-            line[0,sumedIndex] = str(float(line[0,sumedIndex]) * float(line[0,index]))
+            line[0,sumedIndex] = str(str_to_float(line[0,sumedIndex]) * str_to_float(line[0,index]))
             line[0,index] = '1'
 
         if cachedLine.size == 0:
@@ -44,7 +44,7 @@ def __uniqer(matToUniq, sumedIndexes):
         if line[0,0] == cachedLine[0,0]:
             # Merge
             if sumedIndex != -1:
-                cachedLine[0,sumedIndex] = str(float(line[0,sumedIndex])+float(cachedLine[0,sumedIndex]))
+                cachedLine[0,sumedIndex] = str(str_to_float(line[0,sumedIndex])+str_to_float(cachedLine[0,sumedIndex]))
         else:
             results = npmat_appendrow(results, cachedLine)
             cachedLine = line
