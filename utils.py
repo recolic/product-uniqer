@@ -10,3 +10,7 @@ def npmat_appendrow(src, toAppend):
     if toAppend.size == 0:
         return src
     return np.concatenate((src, toAppend), axis=0)
+
+def str_to_float(text):
+    text = text.replace(' ', '')
+    return float(0) if len(text) == 0 else float(text)

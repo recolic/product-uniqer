@@ -43,10 +43,12 @@ class material():
 
 material_class_list = [
     material_class('扁钢', 2, (lambda args, length: args[0] * args[1] * length), 7850, 6), 
-    material_class('圆钢', 1, (lambda args, length: 3.14159265 * args[0] * args[0] * length / 4), 7850, 9),
+    material_class('圆钢', 1, (lambda args, length: 3.14159265 * args[0] * args[0] * length / 4), 7850, 9), 
     material_class('圆管', 2, (lambda args, length: 3.14159265 * args[0] * (args[1] - args[0]) * length), 7850, 6), 
-    material_class('矩形管', 3, (lambda args, length: 2 * args[0] * (args[1] + args[2] + 2 * args[0]) * length), 7850, 6), 
-    material_class('角钢', 3, (lambda args, length: args[0] * (args[1]+args[2]-args[0]) * length), 7850, 6)
+    material_class('矩形管', 3, (lambda args, length: 2 * args[2] * (args[1]+args[0]+2*args[2]) * length), 7850, 6), 
+    material_class( '方管' , 2, (lambda args, length: 4 * args[1] * (args[0]+args[1]) * length), 7850, 6), 
+    material_class('不等边角钢', 3, (lambda args, length: args[0] * (args[1]+args[2]-args[0]) * length), 7850, 6), 
+    material_class('等边角钢', 3, (lambda args, length: args[0] * (args[1]+args[1]-args[0]) * length), 7850, 6), 
 ]
 
 '''

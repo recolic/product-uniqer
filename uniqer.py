@@ -34,7 +34,7 @@ def __uniqer(matToUniq, sumedIndexes):
             if sumedIndex == -1:
                 sumedIndex = index
                 continue
-            line[0,sumedIndex] = str(float(line[0,sumedIndex]) + float(line[0,index]))
+            line[0,sumedIndex] = str(float(line[0,sumedIndex]) * float(line[0,index]))
             line[0,index] = '1'
 
         if cachedLine.size == 0:
