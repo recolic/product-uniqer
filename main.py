@@ -1,4 +1,20 @@
 #!/usr/bin/env python3
+# A script to deal with product sheet. (see template.csv)
+# Copyright (C) 2018  Recolic Keghart <root@recolic.net>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from uniqer import *
 from utils import *
 import material
@@ -85,6 +101,7 @@ for line in np.array(sumedMaterialListMat).tolist():
     newMaterialList.append(newLine)
 
 # Add ignored materials...
+sumedPartListMat = npmat_appendrow(sumedPartListMat, ignoredMat)
 for line in np.array(ignoredMat).tolist():
     newLine = [line[index_material_name] + ' 数量' + line[index_amount]]
     newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
