@@ -41,7 +41,6 @@ def __hasher(matToAppendHash, keyIndexes):
     return results
 
 def __uniqer(matToUniq, sumedIndexes):
-    print('DEBUG>', matToUniq)
     cachedLine = np.matrix([[]])
     results = np.matrix([[]])
     for line in matToUniq:

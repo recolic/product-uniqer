@@ -14,6 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
+import ctypes
+import os
 
 def npmat_appendrow(src, toAppend):
     if type(src) != np.matrix:
@@ -29,3 +31,10 @@ def npmat_appendrow(src, toAppend):
 def str_to_float(text):
     text = text.replace(' ', '')
     return float(0) if len(text) == 0 else float(text)
+
+def alert(text, head='Alert'):
+    if os.name == 'nt':
+        MessageBox = ctypes.windll.user32.MessageBoxW
+        MessageBox(None, head, text, 0)
+    else:
+        print('{}> {}'.format(head, text))
