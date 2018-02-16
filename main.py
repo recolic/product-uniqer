@@ -142,3 +142,4 @@ try:
     _main()
 except Exception as e:
     alert(repr(e), 'Error')
+    raise
