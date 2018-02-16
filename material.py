@@ -32,7 +32,7 @@ class material_class():
             raise AssertionError('material {} must have {} arguments, but gave {}.'.format(self.name, self.want_args, len(arg_list)))
         return self.volume_calculator(arg_list, length) * self.density
     
-    def get_meter_per_unit(self): # deprecated
+    def get_meter_per_unit(self):
         return self.meter_per_unit
     
     def get_unit_amount(self, length):
@@ -50,30 +50,41 @@ class material():
     def get_weight(self, length):
         return self.m_class.get_weight(self.arg_list, length)
     
-    def get_meter_per_unit(self): # deprecated
+    def get_meter_per_unit(self):
         return self.m_class.get_meter_per_unit()
     
     def get_unit_amount(self, length):
         return self.m_class.get_unit_amount(length)
 
 material_class_list = [
-    material_class('扁钢', 2, (lambda args, length: args[0] * args[1] * length), 7850, 6), 
-    material_class('圆钢', 1, (lambda args, length: 3.14159265 * args[0] * args[0] * length / 4), 7850, 9), 
-    material_class('圆管', 2, (lambda args, length: 3.14159265 * args[0] * (args[1] - args[0]) * length), 7850, 6), 
-    material_class('矩形管', 3, (lambda args, length: 2 * args[2] * (args[1]+args[0]+2*args[2]) * length), 7850, 6), 
-    material_class( '方管' , 2, (lambda args, length: 4 * args[1] * (args[0]+args[1]) * length), 7850, 6), 
-    material_class('不等边角钢', 3, (lambda args, length: args[0] * (args[1]+args[2]-args[0]) * length), 7850, 6), 
-    material_class('等边角钢', 3, (lambda args, length: args[0] * (args[1]+args[1]-args[0]) * length), 7850, 6), 
+    material_class('扁钢', 2, (lambda args, length: args[0] * args[1] * length), 7850, 6),
+    material_class('方钢', 1, (lambda args, length: args[0] * args[0] * length), 7850, 6),
+    material_class('板材', 2, (lambda args, length: args[0] * args[1] * length), 7850, 6), 
+    material_class('圆钢', 1, (lambda args, length: 3.14159265*args[0]*args[0]*length/4), 7850, 9), 
+    material_class('圆管', 2, (lambda args, length: 3.14159265*args[1]*(args[0]-args[1])*length), 7850, 6), 
+    material_class('矩形管', 3, (lambda args, length: 2*args[0]*(args[1]+args[2]+2*args[0])*length), 7850, 6), 
+    material_class( '方管' , 2, (lambda args, length: 4*args[0]*(args[0]+args[1])*length), 7850, 6), 
+    material_class('不等边角钢', 3, (lambda args, length: 1.01493*args[0]*(args[1]+args[2]-args[0])*length), 7850, 6), 
+    material_class('等边角钢', 3, (lambda args, length: 1.01493*args[0]*(args[1]+args[1]-args[0])*length), 7850, 6),
+    material_class('三角管', 3, (lambda args, length: arg[0]*(arg[1]-arg[0]/2)*length), 7850, 6),
+    material_class('三棱钢', 3, (lambda args, length: arg[0]*1000*length), 1, 6), # Be caution to its density! lambda is giving weight rather than volume!
 ]
 
 '''
 material arguments:
+All input length is mm. All input weight is kg.
 name arg1 arg2 ...
 扁钢 厚度 宽度
+方钢 宽度
+板材 厚度 宽度
 圆钢 直径
-圆管 厚度 外直径
+圆管 外直径 厚度
 矩形管 厚度 a b
-角钢 厚度 a b
+方管 厚度 a
+不等边角钢 厚度 a b
+等边角钢 厚度 a
+三角管 厚度 边长
+三棱钢 每米质量
 '''
 
 def material_find_class_obj(class_name):

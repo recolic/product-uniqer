@@ -27,15 +27,15 @@ if len(sys.argv) < 2:
     print('Usage: ./main.py <CsvToDeal>')
     exit(1)
 fname = sys.argv[1]
-index_part_name = 0
-index_material_name = 1
-index_amount = 6
-index_arg_begin = 2
-index_addible = 5 # Ex: length is addible
+index_part_name = 5
+index_material_name = 6
+index_amount = 11
+index_arg_begin = 7
+index_addible = 10 # Ex: length is addible
 max_args = 3 # Exclude addible arg, which is the last one
 # If there're some comments, just set as an extra argument.
 
-ignored_material_keywords = ['板材', '外购件'] # DO NOT contain junk_material_words, or it won't match.
+ignored_material_keywords = ['外购件'] # DO NOT contain junk_material_words, or it won't match.
 junk_material_words = ['（厚）', '（宽）', '（单件重）']
 junk_part_words = []
 
@@ -102,11 +102,11 @@ for line in np.array(sumedMaterialListMat).tolist():
 
 # Add ignored materials...
 sumedPartListMat = npmat_appendrow(sumedPartListMat, ignoredMat)
-for line in np.array(ignoredMat).tolist():
-    newLine = [line[index_material_name] + ' 数量' + line[index_amount]]
-    newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
-    newLine.extend(['','','','']) # Warning: if outputMaterialSheet is edited, you must edit this line.
-    newMaterialList.append(newLine)
+#for line in np.array(ignoredMat).tolist():
+#    newLine = [line[index_material_name] + ' 数量' + line[index_amount]]
+#    newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
+#    newLine.extend(['','','','']) # Warning: if outputMaterialSheet is edited, you must edit this line.
+#    newMaterialList.append(newLine)
 
 # Done.
 outputMaterialMat = np.mat(newMaterialList, dtype=str)
@@ -129,7 +129,7 @@ partLine2.extend(['' for i in range(outputPartMat.shape[1]-len(partLine2))])
 outputPartMat = npmat_appendrow(npmat_appendrow(partLine1, partLine2), outputPartMat)
 
 # Ok. Enjoy!
-materialFileName = fname[:-4] + '-material.csv'
-partFileName = fname[:-4] + '-part.csv'
+materialFileName = fname[:-4] + '-材料表.csv'
+partFileName = fname[:-4] + '-下料表.csv'
 np.savetxt(materialFileName, outputMaterialMat, fmt='%s', delimiter=',')
 np.savetxt(partFileName, outputPartMat, fmt='%s', delimiter=',')
