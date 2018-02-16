@@ -144,7 +144,8 @@ def _main():
     materialLine2 = ['材料名称']
     materialLine2.extend(['参数(mm)' for i in range(max_args)])
     materialLine2.extend(['每根长度(m)','每根质量(kg)','理论需根数','理论需质量(kg)'])
-    outputMaterialMat = npmat_appendrow(npmat_appendrow(materialLine1, materialLine2), outputMaterialMat)
+    materialLineEmpty = ['' for i in range(outputMaterialMat.shape[1])]
+    outputMaterialMat = npmat_appendrow(np.mat([materialLine1, materialLine2, materialLineEmpty, materialLineEmpty]), outputMaterialMat)
     
     partLine1 = ['零件表']
     partLine1.extend(['' for i in range(outputPartMat.shape[1]-1)])
@@ -152,7 +153,8 @@ def _main():
     partLine2.extend(['参数(mm)' for i in range(max_args)])
     partLine2.extend(['长度(mm)','数量'])
     partLine2.extend(['' for i in range(outputPartMat.shape[1]-len(partLine2))])
-    outputPartMat = npmat_appendrow(npmat_appendrow(partLine1, partLine2), outputPartMat)
+    partLineEmpty = ['' for i in range(outputPartMat.shape[1])]
+    outputPartMat = npmat_appendrow(np.mat([partLine1, partLine2, partLineEmpty, partLineEmpty]), outputPartMat)
     
     # Ok. Enjoy!
     materialFileName = fname[:-4] + '-材料表.csv'
