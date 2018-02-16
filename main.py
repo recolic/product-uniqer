@@ -39,7 +39,7 @@ ignored_material_keywords = ['外购件'] # DO NOT contain junk_material_words, 
 junk_material_words = ['（厚）', '（宽）', '（单件重）']
 junk_part_words = []
 
-with open(fname, 'r') as fd:
+with open(fname, mode='r', encoding='gb2312') as fd:
     fcontent = fd.read()
 fcontent = csv_preprocess.clean_csv(fcontent)
 
