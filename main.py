@@ -103,9 +103,21 @@ def _main():
         newLine = [str(i) for i in newLine]
         newMaterialList.append(newLine)
     
-    # Add ignored materials...
+    # Add ignored materials before tidify part list
     sumedPartListMat = npmat_appendrow(sumedPartListMat, ignoredMat)
-    # Ignored materials not wanted in material matrix.
+
+    # tidify part list
+    newPartList = []
+    for line in np.array(sumedPartListMat).tolist():
+        newLine = [line[index_part_name], line[index_material_name]]
+        newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
+        newLine.append(line[index_addible])
+        newLine.append(line[index_amount])
+
+        newPartList.append(newLine)
+        
+
+    # Add ignored materials to material list...
     #for line in np.array(ignoredMat).tolist():
     #    newLine = [line[index_material_name] + ' 数量' + line[index_amount]]
     #    newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
@@ -114,8 +126,8 @@ def _main():
     
     # Done.
     outputMaterialMat = np.mat(newMaterialList, dtype=str)
-    outputPartMat = sumedPartListMat
-    
+    outputPartMat = np.mat(newPartList, dtype=str) 
+
     # Make output sheet head
     materialLine1 = ['材料表']
     materialLine1.extend(['' for i in range(outputMaterialMat.shape[1]-1)])
