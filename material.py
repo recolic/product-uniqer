@@ -66,8 +66,8 @@ material_class_list = [
     material_class( '方管' , 2, (lambda args, length: 1.00000*4*args[0]*(args[0]+args[1])*length), 7850, 6), 
     material_class('不等边角钢', 3, (lambda args, length: 1.01493*args[0]*(args[1]+args[2]-args[0])*length), 7850, 6), 
     material_class('等边角钢', 3, (lambda args, length: 1.01493*args[0]*(args[1]+args[1]-args[0])*length), 7850, 6),
-    material_class('三角管', 3, (lambda args, length: 1.00000*arg[0]*(arg[1]-arg[0]/2)*length), 7850, 6),
-    material_class('三棱钢', 3, (lambda args, length: 1.00000*arg[0]*1000*length), 1, 6), # Be caution to its density! lambda is giving weight rather than volume!
+    material_class('三角管', 3, (lambda args, length: 1.00000*args[0]*(args[1]-args[0]/2)*length), 7850, 6),
+    material_class('三棱钢', 3, (lambda args, length: 1.00000*args[0]*1000*length), 1, 6), # Be caution to its density! lambda is giving weight rather than volume!
 ]
 
 '''
