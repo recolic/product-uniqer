@@ -15,13 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import traceback
+def show_exception_and_exit(exc_type, exc_value, tb):
+    traceback.print_exception(exc_type, exc_value, tb)
+    input("Press any key to exit.")
+    sys.exit(-1)
+
+import sys
+import os
+if os.name == 'nt':
+    sys.excepthook = show_exception_and_exit
+
 from uniqer import *
 from utils import *
 import material
 import csv_preprocess
 import numpy as np
 from io import StringIO
-import sys
 
 if len(sys.argv) < 2:
     print('Usage: ./main.py <CsvToDeal>')
@@ -153,5 +163,5 @@ def _main():
 try:
     _main()
 except Exception as e:
-    alert(repr(e), 'Error')
+    #alert(repr(e), 'Error')
     raise
