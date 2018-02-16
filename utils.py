@@ -35,6 +35,6 @@ def str_to_float(text):
 def alert(text, head='Alert'):
     if os.name == 'nt':
         MessageBox = ctypes.windll.user32.MessageBoxW
-        MessageBox(None, head, text, 0)
+        MessageBox(None, text, head, 0)
     else:
         print('{}> {}'.format(head, text))
