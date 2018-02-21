@@ -13,6 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import csv
+import numpy as np
+
 def _rstrip_csv(csvText):
     return '\n'.join([line.rstrip(',') for line in csvText.split('\n')])
 
@@ -34,4 +37,6 @@ def clean_csv(csvText):
     
     print('Warning: clean_csv returns abnormally because of reaching EOF.')
     return result
-        
+
+def np_loadcsv_pycsv(reader_handle):
+    return np.genfromtxt(("\t".join(i) for i in csv.reader(reader_handle)), delimiter="\t", dtype=str)

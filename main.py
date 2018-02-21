@@ -56,7 +56,8 @@ def _main():
         fcontent = fd.read()
     fcontent = csv_preprocess.clean_csv(fcontent)
     
-    contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
+    #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
+    contArr = csv_preprocess.np_loadcsv_pycsv(StringIO(fcontent))
     contMat = np.mat(contArr)
     
     # Clean junk words
