@@ -13,8 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+def _rstrip_csv(csvText):
+    return '\n'.join([line.rstrip(',') for line in csvText.split('\n')])
+
 def clean_csv(csvText):
     # Use `__uniqer_begin__` to indicate a begin, `__uniqer_end__` to indicate an end.
+    csvText = _rstrip_csv(csvText)
+
     foundUniqerBegin = False
     result = ''
     for line in csvText.split('\n'):
