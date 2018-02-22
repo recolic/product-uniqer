@@ -58,6 +58,7 @@ def _main():
     
     #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
     contArr = csv_preprocess.np_loadcsv_pycsv(StringIO(fcontent))
+    contArr = csv_preprocess.trim_npArr(contArr)
     contMat = np.mat(contArr)
     
     # Clean junk words

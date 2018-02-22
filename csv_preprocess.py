@@ -40,3 +40,15 @@ def clean_csv(csvText):
 
 def np_loadcsv_pycsv(reader_handle):
     return np.genfromtxt(("\t".join(i) for i in csv.reader(reader_handle)), delimiter="\t", dtype=str)
+
+def trim_npArr(np_bi_arr):
+    def _trim_str(s):
+        goodstr = s.strip()
+        if s != goodstr:
+            print('Warning: trimming "{}", which is usually not expected.'.format(s))
+        return goodstr
+    assert(type(np_bi_arr) == np.ndarray)
+    res = []
+    for line in np_bi_arr:
+        res.append([_trim_str(item) for item in line])
+    return np.array(res)
