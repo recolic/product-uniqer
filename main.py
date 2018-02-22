@@ -52,7 +52,7 @@ def _main():
     junk_material_words = ['（厚）', '（宽）', '（单件重）']
     junk_part_words = []
     
-    with open(fname, mode='r', encoding='gb2312') as fd:
+    with open(fname, mode='r') as fd:
         fcontent = fd.read()
     fcontent = csv_preprocess.clean_csv(fcontent)
     
