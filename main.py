@@ -150,7 +150,7 @@ def _main():
     materialLineEmpty = ['' for i in range(outputMaterialMat.shape[1])]
     outputMaterialMat = npmat_appendrow(np.mat([materialLine1, materialLine2, materialLineEmpty, materialLineEmpty]), outputMaterialMat)
     
-    partLine1 = ['零件表']
+    partLine1 = ['下料表']
     partLine1.extend(['' for i in range(outputPartMat.shape[1]-1)])
     partLine2 = ['零件名称','材料名称']
     partLine2.extend(['参数(mm)' for i in range(max_args)])
