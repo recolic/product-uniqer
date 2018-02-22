@@ -176,13 +176,13 @@ def cut_extra_info_for_2dmaterial(csvName):
     arg1_must_merge = []
     for line in cont.split('\n'):
         name = _2dmaterial_names[0] # Avoid double-continue at line 183
-            niddle = name + ','
-            if line[:len(niddle)] == niddle:
-                arg1 = line.split(',')[1]
-                if arg1 in arg1_must_merge:
-                    continue
-                line = niddle + arg1
-                arg1_must_merge.append(arg1)
+        niddle = name + ','
+        if line[:len(niddle)] == niddle:
+            arg1 = line.split(',')[1]
+            if arg1 in arg1_must_merge:
+                continue
+            line = niddle + arg1
+            arg1_must_merge.append(arg1)
         result += line
         result += '\n'
     with open(csvName, 'w+') as fd:
