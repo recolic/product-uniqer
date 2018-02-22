@@ -164,6 +164,26 @@ def _main():
     np.savetxt(materialFileName, outputMaterialMat, fmt='%s', delimiter=',')
     np.savetxt(partFileName, outputPartMat, fmt='%s', delimiter=',')
 
+    # Dirty func here.
+    cut_extra_info_for_2dmaterial(materialFileName)
+
+def cut_extra_info_for_2dmaterial(csvName):
+    # This is a dirty function.
+    _2dmaterial_names = ['板材'] # No comma is allowed!
+    with open(csvName, 'r') as fd:
+        cont = fd.read()
+    result = ''
+    for line in cont.split('\n'):
+        for name in _2dmaterial_names:
+            niddle = name + ','
+            if line[:len(niddle)] == niddle:
+                arg1 = line.split(',')[1]
+                line = niddle + arg1
+        result += line
+        result += '\n'
+    with open(csvName, 'w+') as fd:
+        fd.write(result)
+
 try:
     _main()
 except Exception as e:
