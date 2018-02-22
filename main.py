@@ -96,7 +96,8 @@ def _main():
     
     keyIndexes.append(index_part_name)
     keyIndexes.append(index_addible)
-    sumedPartListMat = uniq(toSumMat, keyIndexes, [index_amount]) # This list is ok.
+    sumedPartListMat = uniq(toSumMat, keyIndexes, [index_amount])
+    sumedIgnoredMat = uniq(ignoredMat, keyIndexes, [index_amount])
     
     # tidify material list
     newMaterialList = [] # Tip: ignored materials are still ignored.
@@ -116,7 +117,7 @@ def _main():
         newMaterialList.append(newLine)
     
     # Add ignored materials before tidify part list
-    sumedPartListMat = npmat_appendrow(sumedPartListMat, ignoredMat)
+    sumedPartListMat = npmat_appendrow(sumedPartListMat, sumedIgnoredMat)
 
     # tidify part list
     newPartList = []
