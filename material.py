@@ -60,8 +60,10 @@ material_class_list = [
     material_class('扁钢', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
     material_class('方钢', (lambda args, length: 1.00000 * args[0] * args[0] * length), 7850, 6),
     material_class('板材', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6), 
+    material_class('花纹板', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6), 
     material_class('圆钢', (lambda args, length: 1.00000*3.14159265*args[0]*args[0]*length/4), 7850, 9), 
     material_class('圆管', (lambda args, length: 1.00000*3.14159265*args[1]*(args[0]-args[1])*length), 7850, 6), 
+    material_class('圆无缝管', (lambda args, length: 1.00000*3.14159265*args[1]*(args[0]-args[1])*length), 7850, 9), 
     material_class('矩形管', (lambda args, length: 1.00000*2*args[0]*(args[1]+args[2]-2*args[0])*length), 7850, 6), 
     material_class( '方管' , (lambda args, length: 1.00000*4*args[0]*(args[1]-args[0])*length), 7850, 6), 
     material_class('不等边角钢', (lambda args, length: 1.01493*args[0]*(args[1]+args[2]-args[0])*length), 7850, 6), 
@@ -77,8 +79,10 @@ name arg1 arg2 ...
 扁钢 厚度 宽度
 方钢 宽度
 板材 厚度 宽度
+花纹板 厚度 宽度
 圆钢 直径
 圆管 外直径 厚度
+圆无缝管 外直径 厚度
 矩形管 厚度 a b
 方管 厚度 a
 不等边角钢 厚度 a b

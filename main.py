@@ -170,20 +170,25 @@ def _main():
 
 def cut_extra_info_for_2dmaterial(csvName):
     # This is a dirty function.
-    _2dmaterial_names = ['板材'] # No comma is allowed!
+    _2dmaterial_names = ['板材', '花纹板'] # No comma is allowed!
     with open(csvName, 'r') as fd:
         cont = fd.read()
     result = ''
-    arg1_must_merge = []
+    newLine_must_merge = []
     for line in cont.split('\n'):
-        name = _2dmaterial_names[0] # Avoid double-continue at line 183
-        niddle = name + ','
-        if line[:len(niddle)] == niddle:
-            arg1 = line.split(',')[1]
-            if arg1 in arg1_must_merge:
-                continue
-            line = niddle + arg1
-            arg1_must_merge.append(arg1)
+        double_continue_flag = False
+        for name in _2dmaterial_names:
+            niddle = name + ','
+            if line[:len(niddle)] == niddle:
+                arg1 = line.split(',')[1]
+                newLine = niddle + arg1
+                if newLine in newLine_must_merge:
+                    double_continue_flag = True
+                    break
+                line = newLine
+                newLine_must_merge.append(newLine)
+        if double_continue_flag:
+            continue
         result += line
         result += '\n'
     with open(csvName, 'w+') as fd:
