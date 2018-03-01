@@ -70,6 +70,8 @@ def __uniqer(matToUniq, sumedIndexes):
 def uniq(matToUniq, keyIndexes, sumedIndexes = []):
     # If there're many sumedIndexes, I'll multiply them and put result in the first one.
     assert(type(matToUniq) == np.matrix)
+    if matToUniq.size == 0:
+        return matToUniq
     m = __hasher(matToUniq, keyIndexes)
     m = __sorter(m)
     m = __uniqer(m, [i+1 for i in sumedIndexes]) # plus one because of hash column
