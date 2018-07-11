@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# A script to deal with product sheet. (see template.csv)
+# A script to deal with product sheet. (see test-*.csv)
 # Copyright (C) 2018  Recolic Keghart <root@recolic.net>
 
 # This program is free software: you can redistribute it and/or modify
@@ -45,8 +45,8 @@ def _main():
     index_arg_begin = 7
     index_addible = 10 # Ex: length is addible
     index_amount = 12
+    index_comment = 13
     max_args = 3 # EXCLUDE addible arg, which is always the last one
-    # If there're some comments, just set as an extra argument.
     
     ignored_material_keywords = ['外购件'] # DO NOT contain junk_material_words, or it won't match.
     junk_material_words = ['（厚）', '（宽）', '（单件重）']
@@ -73,7 +73,7 @@ def _main():
         cleanedMat = npmat_appendrow(cleanedMat, line)
     contArr = np.array(cleanedMat)
     contMat = cleanedMat
-    
+
     # Pick these ignored materials out
     toSumMat = np.matrix([[]], dtype=str)
     ignoredMat = np.matrix([[]], dtype=str)
@@ -126,6 +126,7 @@ def _main():
         newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
         newLine.append(line[index_addible])
         newLine.append(line[index_amount])
+        newLine.append(line[index_comment])
 
         newPartList.append(newLine)
         
@@ -154,7 +155,7 @@ def _main():
     partLine1.extend(['' for i in range(outputPartMat.shape[1]-1)])
     partLine2 = ['零件名称','材料名称']
     partLine2.extend(['参数(mm)' for i in range(max_args)])
-    partLine2.extend(['长度(mm)','数量'])
+    partLine2.extend(['长度(mm)','数量','备注'])
     partLine2.extend(['' for i in range(outputPartMat.shape[1]-len(partLine2))])
     partLineEmpty = ['' for i in range(outputPartMat.shape[1])]
     outputPartMat = npmat_appendrow(np.mat([partLine1, partLine2, partLineEmpty, partLineEmpty]), outputPartMat)
