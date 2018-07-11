@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 class material_class():
-    def __init__(self, name, volume_calculator, density, meter_per_unit):
+    def __init__(self, name, volume_calculator, density, meter_per_unit, is2d = False):
         '''
         Assume all arguments in SI.
         mass = volume_calculator(arg_list, length) * density
@@ -26,6 +26,7 @@ class material_class():
         self.volume_calculator = volume_calculator
         self.density = density
         self.meter_per_unit = meter_per_unit
+        self.is2d = is2d
     
     def get_weight(self, arg_list, length):
         #if len(arg_list) < self.want_args:
@@ -59,8 +60,8 @@ class material():
 material_class_list = [
     material_class('扁钢', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
     material_class('方钢', (lambda args, length: 1.00000 * args[0] * args[0] * length), 7850, 6),
-    material_class('板材', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6), 
-    material_class('花纹板', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6), 
+    material_class('板材', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6, True), 
+    material_class('花纹板', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6, True), 
     material_class('圆钢', (lambda args, length: 1.00000*3.14159265*args[0]*args[0]*length/4), 7850, 9), 
     material_class('圆管', (lambda args, length: 1.00000*3.14159265*args[1]*(args[0]-args[1])*length), 7850, 6), 
     material_class('圆无缝管', (lambda args, length: 1.00000*3.14159265*args[1]*(args[0]-args[1])*length), 7850, 9), 

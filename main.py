@@ -179,7 +179,8 @@ def cut_extra_info_for_2dmaterial(csvName):
             if line[:len(niddle)] == niddle:
                 w += str_to_float(line.split(',')[-1]) # Assume last element is weight
         return str(w)
-    _2dmaterial_names = ['板材', '花纹板'] # No comma is allowed!
+    # No comma is allowed in 2dmaterial_name!
+    _2dmaterial_names = list(filter(lambda x: x != '', [mclass.name if mclass.is2d else '' for mclass in material.material_class_list]))
     with open(csvName, 'r') as fd:
         cont = fd.read()
     result = ''
