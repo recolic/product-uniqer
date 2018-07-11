@@ -111,7 +111,7 @@ def _main():
         newLine.append(material_class.get_meter_per_unit()) # meter per unit
         newLine.append(material_class.get_weight(arg_list, material_class.get_meter_per_unit())) # weight per unit
         newLine.append(material_class.get_unit_amount(m_length)) # needed unit amount
-#        newLine.append(material_class.get_weight(arg_list, m_length)) # needed weight
+        newLine.append(material_class.get_weight(arg_list, m_length)) # needed weight
     
         newLine = [str(i) for i in newLine]
         newMaterialList.append(newLine)
@@ -147,7 +147,7 @@ def _main():
     materialLine1.extend(['' for i in range(outputMaterialMat.shape[1]-1)])
     materialLine2 = ['材料名称']
     materialLine2.extend(['参数(mm)' for i in range(max_args)])
-    materialLine2.extend(['每根长度(m)','每根质量(kg)','理论需根数'])#,'理论需质量(kg)'])
+    materialLine2.extend(['每根长度(m)','每根质量(kg)','理论需根数','理论需质量(kg)'])
     materialLineEmpty = ['' for i in range(outputMaterialMat.shape[1])]
     outputMaterialMat = npmat_appendrow(np.mat([materialLine1, materialLine2, materialLineEmpty, materialLineEmpty]), outputMaterialMat)
     
@@ -171,6 +171,14 @@ def _main():
 
 def cut_extra_info_for_2dmaterial(csvName):
     # This is a dirty function.
+    def str_repeat(string_to_expand, length):
+        return (string_to_expand * (int(length/len(string_to_expand))+1))[:length]
+    def _get_summed_weight(cont, niddle):
+        w = 0.0
+        for line in cont.split('\n'):
+            if line[:len(niddle)] == niddle:
+                w += str_to_float(line.split(',')[-1]) # Assume last element is weight
+        return str(w)
     _2dmaterial_names = ['板材', '花纹板'] # No comma is allowed!
     with open(csvName, 'r') as fd:
         cont = fd.read()
@@ -182,7 +190,7 @@ def cut_extra_info_for_2dmaterial(csvName):
             niddle = name + ','
             if line[:len(niddle)] == niddle:
                 arg1 = line.split(',')[1]
-                newLine = niddle + arg1
+                newLine = niddle + arg1 + str_repeat(',', line.count(',')-1) + _get_summed_weight(cont, niddle+arg1)
                 if newLine in newLine_must_merge:
                     double_continue_flag = True
                     break
