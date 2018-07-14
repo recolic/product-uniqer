@@ -15,6 +15,7 @@
 
 import csv
 import numpy as np
+import functools, utils, re
 
 def _rstrip_csv(csvText):
     return '\n'.join([line.rstrip(',') for line in csvText.split('\n')])
@@ -32,11 +33,19 @@ def clean_csv(csvText):
         if not foundUniqerBegin:
             continue
         if '__uniqer_end__' in line:
+            result = result[:-1] if len(result) != 0 else result
             return result
         result += line + '\n'
     
     print('Warning: clean_csv returns abnormally because of reaching EOF.')
     return result
+
+def clean_csv_2(csvText):
+    # Append ',' to end of line, to make len(everyLine.split(',')) == max(anyLine.split(',')).
+    def csv_bettercount_delim(line):
+        return re.sub(r'"[^"]*"', '', line).count(',')
+    max_count = functools.reduce(lambda a, b: max(a, b), [csv_bettercount_delim(line) for line in csvText.split('\n')])
+    return '\n'.join([line+utils.str_repeat(',', max_count-csv_bettercount_delim(line)) for line in csvText.split('\n')])
 
 def np_loadcsv_pycsv(reader_handle):
     return np.genfromtxt(("\t".join(i) for i in csv.reader(reader_handle)), delimiter="\t", dtype=str)

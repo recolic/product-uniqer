@@ -32,6 +32,9 @@ def str_to_float(text):
     text = text.replace(' ', '')
     return float(0) if len(text) == 0 else float(text)
 
+def str_repeat(string_to_expand, length):
+    return (string_to_expand * (int(length/len(string_to_expand))+1))[:length]
+
 def alert(text, head='Alert'):
     if os.name == 'nt':
         MessageBox = ctypes.windll.user32.MessageBoxW

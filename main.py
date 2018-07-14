@@ -55,6 +55,7 @@ def _main():
     with open(fname, mode='r') as fd:
         fcontent = fd.read()
     fcontent = csv_preprocess.clean_csv(fcontent)
+    fcontent = csv_preprocess.clean_csv_2(fcontent)
     
     #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
     contArr = csv_preprocess.np_loadcsv_pycsv(StringIO(fcontent))
@@ -171,8 +172,6 @@ def _main():
 
 def cut_extra_info_for_2dmaterial(csvName):
     # This is a dirty function.
-    def str_repeat(string_to_expand, length):
-        return (string_to_expand * (int(length/len(string_to_expand))+1))[:length]
     def _get_summed_weight(cont, niddle):
         w = 0.0
         for line in cont.split('\n'):
