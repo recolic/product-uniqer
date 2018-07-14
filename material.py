@@ -59,8 +59,10 @@ class material():
 
 material_class_list = [
     material_class('扁钢', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
+    material_class('扁钢--易折弯', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
     material_class('方钢', (lambda args, length: 1.00000 * args[0] * args[0] * length), 7850, 6),
     material_class('板材', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6, True), 
+    material_class('板材--冷轧板', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6, True),
     material_class('花纹板', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6, True), 
     material_class('圆钢', (lambda args, length: 1.00000*3.14159265*args[0]*args[0]*length/4), 7850, 9), 
     material_class('圆管', (lambda args, length: 1.00000*3.14159265*args[1]*(args[0]-args[1])*length), 7850, 6), 
