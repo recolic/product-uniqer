@@ -26,20 +26,19 @@ import os
 if os.name == 'nt':
     sys.excepthook = show_exception_and_exit
 
-from uniqer import *
-from utils import *
-import material
-import csv_preprocess
-import numpy as np
-from io import StringIO
-
-if len(sys.argv) < 2:
-    print('Usage: ./main.py <CsvToDeal>')
-    exit(1)
-fname = sys.argv[1]
-
 def _main():
-    global fname
+    from uniqer import *
+    from utils import *
+    import material
+    import csv_preprocess
+    import numpy as np
+    from io import StringIO
+    
+    if len(sys.argv) < 2:
+        print('Usage: ./main.py <CsvToDeal>')
+        exit(1)
+    fname = sys.argv[1]
+
     index_part_name = 5
     index_material_name = 6
     index_arg_begin = 7

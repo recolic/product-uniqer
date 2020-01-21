@@ -20,19 +20,19 @@ import functools, utils, re
 def _rstrip_csv(csvText):
     return '\n'.join([line.rstrip(',') for line in csvText.split('\n')])
 
-def clean_csv(csvText):
-    # Use `__uniqer_begin__` to indicate a begin, `__uniqer_end__` to indicate an end.
+def clean_csv(csvText, begin_keyword='__uniqer_begin__', end_keyword='__uniqer_end__'):
+    # Use begin_keyword to indicate a begin, end_keyword to indicate an end.
     csvText = _rstrip_csv(csvText)
 
     foundUniqerBegin = False
     result = ''
     for line in csvText.split('\n'):
-        if '__uniqer_begin__' in line:
+        if begin_keyword in line:
             foundUniqerBegin = True
             continue
         if not foundUniqerBegin:
             continue
-        if '__uniqer_end__' in line:
+        if end_keyword in line:
             result = result[:-1] if len(result) != 0 else result
             return result
         result += line + '\n'
@@ -61,3 +61,6 @@ def trim_npArr(np_bi_arr):
     for line in np_bi_arr:
         res.append([_trim_str(item) for item in line])
     return np.array(res)
+
+def npmat_to_csv(npmat):
+
