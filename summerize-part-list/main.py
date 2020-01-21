@@ -22,9 +22,11 @@ def show_exception_and_exit(exc_type, exc_value, tb):
     sys.exit(-1)
 
 import sys
-import os
+import os, shutil
 if os.name == 'nt':
     sys.excepthook = show_exception_and_exit
+
+csv_buf = io.StringIO()
 
 def _main():
     import config, xlsx_conv, io
@@ -47,18 +49,31 @@ def _main():
 
     os.mkdir(config.output_dirname)
 
-    for line in contMat:
+    for cter, line in enumerate(contMat):
         product_id, product_name, quantity = line[0:2]
-        print('Adding product {} {}({}) ...'.format(quantity, product_name, product_id))
-        add_product(product_id, product_name, quantity, must_have_xlsx=True) # first-level recursive is enabled
+        serial = cter + 1
+        print('[{}]Adding product {} {}({}) ...'.format(serial, quantity, product_name, product_id))
 
+        add_product(serial, product_id, product_name, quantity, must_have_xlsx=True) # first-level recursive is enabled
 
+    output_fname = os.path.basename(fname)[:-4] + '.csv'
+    with open(output_fname, 'w+') as f:
+        f.write(csv_buf.getvalue())
+
+    input("Done. Press any key to exit.")
 
 def get_part_metadata_from_csv_text(csvText):
     # Part Unique ID, Part Name
+def get_id_prefix_from_string(s):
+    for i, c in enumerate(s):
+        first_illegal_char_index = i
+        if c is not in 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm':
+            break
+    return s[:first_illegal_char_index]
 
     
-def add_product(_id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
+def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
+    global csv_buf
     # Search & read product/part file.
     found_pdf, found_xlsx = None
     is_xlsx = lambda fname: fname.endswith('.xlsm') or fname.endswith('.xlsx') or fname.endswith('.xls')
@@ -75,8 +90,13 @@ def add_product(_id, name, quantity, must_have_xlsx=False, allow_recursive_part_
     if found_pdf is None:
         print('Error: Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(_id+fname, config.library_path, config.search_only_top_level_directory))
         return
+
     # Found the product pdf.
+    shutil.copy(found_pdf, config.output_dirname)
+
     if found_xlsx is not None:
+        shutil.copy(found_xlsx, config.output_dirname)
+        # Write CSV
         csvIO = io.StringIO()
         xlsx_conv.xlsx2csv(found_xlsx, config.sheet_name, csvIO)
         fcontent = csvIO.getvalue()
@@ -87,14 +107,22 @@ def add_product(_id, name, quantity, must_have_xlsx=False, allow_recursive_part_
         contArr = csv_preprocess.trim_npArr(contArr)
         contMat = np.mat(contArr)
 
+        contMat[:,0] = serial
+        contMat[:,1] = part_id
+        contMat[:,2] = part_name
+        contMat[:,3] = quantity
+        contMat.resize(contMat.shape[0], 12)
 
-
-
+        npmat2csv(contMat, csv_buf)
 
         # recursive part reference
-        add_product()
-
-
+        for line in contMat:
+            part_name = contMat[config.part_name_col_index]
+            part_id = get_id_prefix_from_string(part_name)
+            add_product(serial, part_id, part_name, quantity*int(contMat[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+    else:
+        if must_have_xlsx:
+            print('Error: Unable to find xls: {}.xlsx (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
 
 try:
     _main()

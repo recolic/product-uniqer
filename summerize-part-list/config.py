@@ -11,3 +11,6 @@ sheet_name = 'Sheet1'
 search_only_top_level_directory = False
 output_dirname = 'output'
 
+# index of column in specific part-material list.
+part_name_col_index = 5
+part_quantity_col_index = 4 # in 1 parent part

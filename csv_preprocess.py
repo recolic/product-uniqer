@@ -62,5 +62,9 @@ def trim_npArr(np_bi_arr):
         res.append([_trim_str(item) for item in line])
     return np.array(res)
 
-def npmat_to_csv(npmat):
+import pandas
+
+def npmat_to_csv(npmat, outputFd):
+    pandas.DataFrame(npmat).to_csv(outputFd, header=False, index=False)
+
 
