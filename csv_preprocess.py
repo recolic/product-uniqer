@@ -64,7 +64,7 @@ def trim_npArr(np_bi_arr):
 
 import pandas
 
-def npmat_to_csv(npmat, outputFd):
+def npmat2csv(npmat, outputFd):
     pandas.DataFrame(npmat).to_csv(outputFd, header=False, index=False)
 
 

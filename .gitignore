@@ -2,3 +2,5 @@
 test-gb2312-*
 test-utf8-*
 test/
+input..csv
+output/
