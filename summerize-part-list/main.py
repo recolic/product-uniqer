@@ -98,12 +98,13 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
     print('ADD_PRODUCT: serial={}, _id={}, name={}, quantity={}'.format(serial, _id, name, quantity))
     # Search & read product/part file.
     found_pdf, found_xlsx = None, None
-    is_xlsx = lambda fname: fname.endswith('.xlsm') or fname.endswith('.xlsx') or fname.endswith('.xls')
+    is_xlsx = lambda fname: fname.endswith('.xlsm') or fname.endswith('.xlsx') or fname.endswith('.xls') or fname.endswith('.XLSM') or fname.endswith('.XLSX') or fname.endswith('.XLS')
+    is_pdf = lambda fname: fname.endswith('.pdf') or fname.endswith('.PDF')
 
     for (dirpath, dirnames, filenames) in os.walk(config.library_path):
         for fname in filenames:
             if fname.startswith(_id):
-                if fname.endswith('.pdf'):
+                if is_pdf(fname):
                     found_pdf = dirpath + os.path.sep + fname
                 elif is_xlsx(fname):
                     found_xlsx = dirpath + os.path.sep + fname
