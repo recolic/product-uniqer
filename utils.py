@@ -15,7 +15,7 @@
 
 import numpy as np
 import ctypes
-import os
+import os, shutil
 
 def npmat_appendrow(src, toAppend):
     if src is None:
@@ -64,6 +64,9 @@ def stoi(s):
     # string to int
     return 0 if (s is None or s == '') else int(float(s))
  
-
+def try_copy(file_path, out_dir, dst = None):
+    name = dst or os.path.basename(file_path)
+    if not os.path.exists(os.path.join(out_dir, name)):
+        shutil.copy(file_path, os.path.join(out_dir, name))
 
 
