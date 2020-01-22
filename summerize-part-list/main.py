@@ -80,7 +80,8 @@ def _main():
 
     output_fname = os.path.basename(fname)[:-4] + '.csv'
     with open(output_fname, 'w+') as f:
-        f.write(csv_buf.getvalue())
+        # Force windows NT use Linux LF. M$ office don't like CRLF csv.
+        f.write(csv_buf.getvalue().replace('\r\n', '\n'))
 
     input("Done. Press any key to exit.")
 
