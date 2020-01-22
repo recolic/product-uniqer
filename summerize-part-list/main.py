@@ -26,7 +26,9 @@ import sys
 import os, shutil
 if os.name == 'nt':
     sys.excepthook = show_exception_and_exit
-
+if config.working_dir != "":
+    os.chdir(config.working_dir)
+ 
 # Allow import parent
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -49,8 +51,6 @@ from utils import *
 csv_buf = io.StringIO()
 
 def _main():
-    if config.working_dir != "":
-        os.chdir(config.working_dir)
     if len(sys.argv) < 2:
         print('Usage: ./main.py <XlsToDeal>')
         exit(1)
