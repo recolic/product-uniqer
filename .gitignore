@@ -5,3 +5,5 @@ test/
 input..csv
 output/
 missing-parts.txt
+
+config.py
