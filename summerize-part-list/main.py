@@ -49,6 +49,8 @@ from utils import *
 csv_buf = io.StringIO()
 
 def _main():
+    if config.working_dir != "":
+        os.chdir(config.working_dir)
     if len(sys.argv) < 2:
         print('Usage: ./main.py <XlsToDeal>')
         exit(1)

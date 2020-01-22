@@ -1,5 +1,6 @@
 
 library_path = 'test/大牧人标准图库2020-1-8【单件库】'
+working_dir = ''
 
 allow_part_tree_reference = False
 allow_part_recursive_reference = False # Not supported YET!
