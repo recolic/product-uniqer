@@ -60,8 +60,10 @@ def get_id_prefix_from_string(s):
             break
     return s[:first_illegal_char_index]
 
-def _stoi(s):
+def stoi(s):
     # string to int
     return 0 if (s is None or s == '') else int(float(s))
  
+
+
 

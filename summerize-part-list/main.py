@@ -33,6 +33,15 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
+import logging
+logging.basicConfig(filename='missing-parts.txt',level=logging.WARNING)
+def log_error(msg):
+    print('Error:', msg)
+    logging.error(msg)
+def log_warn(msg):
+    print('Warning:', msg)
+    logging.warning(msg)
+
 import config, xlsx_conv, io
 import csv_preprocess
 import numpy as np
@@ -77,7 +86,7 @@ def get_part_metadata_from_csv_text(csvText):
         ar = csvText.split('\n')[3].split(',')
         return ar[1], ar[2]
     except:
-        print("Error: Invalid csvText while parsing part_metadata")
+        log_error("Error: Invalid csvText while parsing part_metadata")
         raise
 
 def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
@@ -97,7 +106,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
             break
     
     if found_pdf is None:
-        print('Error: Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(_id+name, config.library_path, config.search_only_top_level_directory))
+        log_error('Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(_id+name, config.library_path, config.search_only_top_level_directory))
         return
 
     # Found the product pdf.
@@ -131,12 +140,12 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
             part_id = get_id_prefix_from_string(part_name)
             if part_id != '':
                 if part_id.startswith(_id):
-                    print('Warning: Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
+                    log_warn('Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
                 else:
-                    add_product(serial, part_id, part_name, quantity*_stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+                    add_product(serial, part_id, part_name, quantity*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
     else:
         if must_have_xlsx:
-            print('Error: Unable to find xls: {}.xlsx (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
+            log_error('Error: Unable to find xls: {}.xlsx (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
     print('ADD_PRODUCT END.')
 
 try:
