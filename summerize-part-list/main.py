@@ -102,10 +102,13 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
 
     for (dirpath, dirnames, filenames) in os.walk(config.library_path):
         for fname in filenames:
-            if fname.startswith(_id) and fname.endswith('.pdf'):
-                found_pdf = dirpath + os.path.sep + fname
-            if fname.startswith(_id) and is_xlsx(fname):
-                found_xlsx = dirpath + os.path.sep + fname
+            if fname.startswith(_id):
+                if fname.endswith('.pdf'):
+                    found_pdf = dirpath + os.path.sep + fname
+                elif is_xlsx(fname):
+                    found_xlsx = dirpath + os.path.sep + fname
+                else:
+                    log_error('Unknown file {} while looking for {}. Skipped.'.format(fname, _id))
         if (found_pdf is not None) or config.search_only_top_level_directory:
             break
     
@@ -146,7 +149,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
                 if part_id.startswith(_id):
                     log_warn('Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
                 else:
-                    add_product(serial, part_id, part_name, quantity*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+                    add_product(serial, part_id, part_name, stoi(quantity)*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
     else:
         if must_have_xlsx:
             log_error('Error: Unable to find xls: {}.xlsx (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
