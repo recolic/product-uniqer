@@ -50,8 +50,18 @@ def npmat_truncate_cols(mat, max_cols):
         tmp = line.copy()
         tmp.resize(1, max_cols)
         result = npmat_appendrow(result, tmp)
-        print('truncate: ', tmp)
     return result
 
+def get_id_prefix_from_string(s):
+    first_illegal_char_index = 0
+    for i, c in enumerate(s):
+        first_illegal_char_index = i
+        if c not in 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm':
+            break
+    return s[:first_illegal_char_index]
 
+def _stoi(s):
+    # string to int
+    return 0 if (s is None or s == '') else int(float(s))
+ 
 

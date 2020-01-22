@@ -36,7 +36,7 @@ sys.path.insert(0,parentdir)
 import config, xlsx_conv, io
 import csv_preprocess
 import numpy as np
-import utils
+from utils import *
 csv_buf = io.StringIO()
 
 def _main():
@@ -80,18 +80,6 @@ def get_part_metadata_from_csv_text(csvText):
         print("Error: Invalid csvText while parsing part_metadata")
         raise
 
-def get_id_prefix_from_string(s):
-    first_illegal_char_index = 0
-    for i, c in enumerate(s):
-        first_illegal_char_index = i
-        if c not in 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm':
-            break
-    return s[:first_illegal_char_index]
-
-def _stoi(s):
-    # string to int
-    return 0 if (s is None or s == '') else int(float(s))
-    
 def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
     global csv_buf
     print('ADD_PRODUCT: serial={}, _id={}, name={}, quantity={}'.format(serial, _id, name, quantity))
@@ -132,13 +120,12 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat[:,1] = part_id
         contMat[:,2] = part_name
         contMat[:,3] = quantity
-        contMat = utils.npmat_truncate_cols(contMat, 12)
+        contMat = npmat_truncate_cols(contMat, 12)
 
         csv_preprocess.npmat2csv(contMat, csv_buf)
 
         # recursive part reference
         for line in contMat:
-            print(contMat.shape, line.shape)
             line = line.tolist()[0]
             part_name = line[config.part_name_col_index]
             part_id = get_id_prefix_from_string(part_name)
