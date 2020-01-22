@@ -26,16 +26,24 @@ import sys
 import os, shutil
 if os.name == 'nt':
     sys.excepthook = show_exception_and_exit
-if config.working_dir != "":
-    os.chdir(config.working_dir)
- 
+
 # Allow import parent
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
+import config, xlsx_conv, io
+import csv_preprocess
+import numpy as np
+from utils import *
+csv_buf = io.StringIO()
+
 import logging
+############################ Change working directory. ################################
+if config.working_dir != "":
+    os.chdir(config.working_dir)
+
 logging.basicConfig(filename='missing-parts.txt',level=logging.WARNING)
 def log_error(msg):
     print('Error:', msg)
@@ -43,12 +51,6 @@ def log_error(msg):
 def log_warn(msg):
     print('Warning:', msg)
     logging.warning(msg)
-
-import config, xlsx_conv, io
-import csv_preprocess
-import numpy as np
-from utils import *
-csv_buf = io.StringIO()
 
 def _main():
     if len(sys.argv) < 2:
