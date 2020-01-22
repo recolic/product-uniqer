@@ -36,6 +36,7 @@ sys.path.insert(0,parentdir)
 import config, xlsx_conv, io
 import csv_preprocess
 import numpy as np
+import utils
 csv_buf = io.StringIO()
 
 def _main():
@@ -131,22 +132,25 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat[:,1] = part_id
         contMat[:,2] = part_name
         contMat[:,3] = quantity
-        contMat = contMat.copy()
-        contMat.resize(contMat.shape[0], 12)
+        contMat = utils.npmat_truncate_cols(contMat, 12)
 
         csv_preprocess.npmat2csv(contMat, csv_buf)
 
         # recursive part reference
         for line in contMat:
-            print(line)
+            print(contMat.shape, line.shape)
             line = line.tolist()[0]
             part_name = line[config.part_name_col_index]
             part_id = get_id_prefix_from_string(part_name)
             if part_id != '':
-                add_product(serial, part_id, part_name, quantity*_stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+                if part_id.startswith(_id):
+                    print('Warning: Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
+                else:
+                    add_product(serial, part_id, part_name, quantity*_stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
     else:
         if must_have_xlsx:
             print('Error: Unable to find xls: {}.xlsx (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
+    print('ADD_PRODUCT END.')
 
 try:
     _main()

@@ -10,3 +10,6 @@ def xlsx2csv(xlsxPath, sheetIndex, outputFd):
     for rownum in range(sh.nrows):
         wr.writerow(sh.row_values(rownum))
 
+with open('test.csv', 'w') as f:
+    xlsx2csv('test.xlsm', 0, f)
+

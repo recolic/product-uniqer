@@ -18,6 +18,8 @@ import ctypes
 import os
 
 def npmat_appendrow(src, toAppend):
+    if src is None:
+        return toAppend
     if type(src) != np.matrix:
         src = np.matrix(src)
     if type(toAppend) != np.matrix:
@@ -41,3 +43,15 @@ def alert(text, head='Alert'):
         MessageBox(None, text, head, 0)
     else:
         print('{}> {}'.format(head, text))
+
+def npmat_truncate_cols(mat, max_cols):
+    result = None
+    for line in mat:
+        tmp = line.copy()
+        tmp.resize(1, max_cols)
+        result = npmat_appendrow(result, tmp)
+        print('truncate: ', tmp)
+    return result
+
+
+

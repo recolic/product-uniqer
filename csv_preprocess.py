@@ -59,7 +59,10 @@ def trim_npArr(np_bi_arr):
     assert(type(np_bi_arr) == np.ndarray)
     res = []
     for line in np_bi_arr:
-        res.append([_trim_str(item) for item in line])
+        if type(line) == str or type(line) == np.str_:
+            res.append(_trim_str(line))
+        else:
+            res.append([_trim_str(item) for item in line])
     return np.array(res)
 
 import pandas
