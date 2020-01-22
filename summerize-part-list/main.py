@@ -83,8 +83,6 @@ def _main():
     with open('missing-parts.txt', 'w+') as f:
         f.write(os.linesep.join(missing_parts))
 
-    input("Done. Press any key to exit.")
-
 def get_part_metadata_from_csv_text(csvText):
     # Part Unique ID, Part Name
     try:
@@ -115,9 +113,9 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
             break
     
     if found_pdf is None:
-        name_and_id = '{}({})-PDF'.format(name, _id)
+        name_and_id = '{}({})'.format(name, _id)
         log_error('Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(name_and_id, config.library_path, config.search_only_top_level_directory))
-        missing_parts += name_and_id
+        missing_parts += '{},{},{}'.format(name, _id, 'pdf')
         return
 
     # Found the product pdf.
@@ -156,9 +154,9 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
                     add_product(serial, part_id, part_name, stoi(quantity)*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
     else:
         if must_have_xlsx:
-            name_and_id = '{}({})-XLSX'.format(part_name, part_id)
+            name_and_id = '{}({})'.format(part_name, part_id)
             log_error('Error: Unable to find xls: {} (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
-            missing_parts += name_and_id
+            missing_parts += '{},{},{}'.format(part_name, part_id, 'xlsx')
     print('ADD_PRODUCT END.')
 
 try:
