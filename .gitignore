@@ -4,6 +4,6 @@ test-utf8-*
 test/
 input..csv
 output/
-missing-parts.txt
+missing-parts.csv
 
 config.py

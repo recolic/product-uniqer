@@ -81,7 +81,8 @@ def _main():
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
         f.write(csv_buf.getvalue().replace('\r\n', '\n'))
     with open('missing-parts.csv', 'w+') as f:
-        f.write(os.linesep.join(missing_parts))
+        # Force windows NT use Linux LF. M$ office don't like CRLF csv.
+        f.write('\n'.join(missing_parts))
 
 def get_part_metadata_from_csv_text(csvText):
     # Part Unique ID, Part Name
