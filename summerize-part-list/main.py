@@ -155,9 +155,9 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
                     add_product(serial, part_id, part_name, stoi(quantity)*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
     else:
         if must_have_xlsx:
-            name_and_id = '{}({})'.format(part_name, part_id)
+            name_and_id = '{}({})'.format(name, _id)
             log_error('Error: Unable to find xls: {} (xls/xlsm/xlsx)'.format(found_pdf[:-4]))
-            missing_parts.append('{},{},{}'.format(part_name, part_id, 'xlsx'))
+            missing_parts.append('{},{},{}'.format(name, _id, 'xlsx'))
     print('ADD_PRODUCT END.')
 
 try:
