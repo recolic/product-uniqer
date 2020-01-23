@@ -77,6 +77,7 @@ def _main():
         print('[{}]Adding product {} {}({}) ...'.format(serial, quantity, product_name, product_id))
 
         add_product(serial, product_id, product_name, quantity, must_have_xlsx=True) # first-level recursive is enabled
+    _magic_merge_missing_parts()
 
     with open(output_prefix + '.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
@@ -117,7 +118,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
     if found_pdf is None:
         name_and_id = '{}({})'.format(name, _id)
         log_error('Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(name_and_id, config.library_path, config.search_only_top_level_directory))
-        missing_parts.insert(0, '{},{},{}'.format(_id, name, '少pdf图纸')) # PDF should always appear in front of XLSx.
+        missing_parts.insert(0, '{},{},{}'.format(_id, name, '少图')) # PDF should always appear in front of XLSx.
     else:
         # Found the product pdf.
         try_copy(found_pdf, config.output_dirname)
@@ -157,8 +158,26 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         if must_have_xlsx:
             name_and_id = '{}({})'.format(name, _id)
             log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id))
-            missing_parts.append('{},{},{}'.format(_id, name, '少材料表'))
+            missing_parts.append('{},{},{}'.format(_id, name, '少材料'))
     print('ADD_PRODUCT END.')
+
+def _magic_merge_missing_parts():
+    global missing_parts
+    buf = {}
+    for line in missing_parts:
+        line = line.split(',')
+        k = (line[0], line[1])
+        v = line[2]
+        v_old = buf.get(k)
+        if v_old == None:
+            buf[k] = v
+        elif v in v_old:
+            continue
+        else:
+            buf[k] = v + v_old
+    missing_parts = []
+    for k in buf:
+        missing_parts.append('{},{},{}'.format(k[0], k[1], buf.get(k)))
 
 try:
     _main()
