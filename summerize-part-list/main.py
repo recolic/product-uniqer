@@ -124,7 +124,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
     try_copy(found_pdf, config.output_dirname)
 
     if found_xlsx is not None:
-        try_copy(found_xlsx, config.output_dirname)
+        #try_copy(found_xlsx, config.output_dirname)
         # Write CSV
         csvIO = io.StringIO()
         xlsx_conv.xlsx2csv(found_xlsx, 0, csvIO)
