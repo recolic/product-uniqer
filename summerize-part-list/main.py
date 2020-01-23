@@ -117,11 +117,10 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
     if found_pdf is None:
         name_and_id = '{}({})'.format(name, _id)
         log_error('Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(name_and_id, config.library_path, config.search_only_top_level_directory))
-        missing_parts.append('{},{},{}'.format(name, _id, 'pdf'))
-        return
-
-    # Found the product pdf.
-    try_copy(found_pdf, config.output_dirname)
+        missing_parts.insert(0, '{},{},{}'.format(name, _id, 'pdf')) # PDF should always appear in front of XLSx.
+    else:
+        # Found the product pdf.
+        try_copy(found_pdf, config.output_dirname)
 
     if found_xlsx is not None:
         #try_copy(found_xlsx, config.output_dirname)
