@@ -49,7 +49,7 @@ def log_error(msg):
 def log_warn(msg):
     print('Warning:', msg)
 
-missing_parts = ['Missing Parts:']
+missing_parts = []
 def _main():
     if len(sys.argv) < 2:
         print('Usage: ./main.py <XlsToDeal>')
