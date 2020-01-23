@@ -55,7 +55,7 @@ def _main():
         print('Usage: ./main.py <XlsToDeal>')
         exit(1)
     fname = sys.argv[1]
-    output_prefix = os.path.basename(fname)[:-4]
+    output_prefix = fname[:-4]
     config.output_dirname = output_prefix + config.output_dirname 
 
     csvIO = io.StringIO()
