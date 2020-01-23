@@ -156,7 +156,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
     else:
         if must_have_xlsx:
             name_and_id = '{}({})'.format(name, _id)
-            log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id)
+            log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id))
             missing_parts.append('{},{},{}'.format(name, _id, 'xlsx'))
     print('ADD_PRODUCT END.')
 
