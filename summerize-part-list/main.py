@@ -55,6 +55,8 @@ def _main():
         print('Usage: ./main.py <XlsToDeal>')
         exit(1)
     fname = sys.argv[1]
+    output_prefix = os.path.basename(fname)[:-4]
+    config.output_dirname = output_prefix + config.output_dirname 
 
     csvIO = io.StringIO()
     xlsx_conv.xlsx2csv(fname, 0, csvIO)
@@ -76,11 +78,10 @@ def _main():
 
         add_product(serial, product_id, product_name, quantity, must_have_xlsx=True) # first-level recursive is enabled
 
-    output_fname = os.path.basename(fname)[:-4] + '.csv'
-    with open(output_fname, 'w+') as f:
+    with open(output_prefix + '.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
         f.write(csv_buf.getvalue().replace('\r\n', '\n'))
-    with open('missing-parts.csv', 'w+') as f:
+    with open(output_prefix + '-缺失零件.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
         f.write('\n'.join(missing_parts))
 
