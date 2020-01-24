@@ -81,6 +81,7 @@ def _main():
 
     with open(output_prefix + '.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
+        f.write('序号,,,套数,单套数量,零件名称,材料规格,参数A,参数B,参数C,长度,单件重,总数量,备注\n')
         f.write(csv_buf.getvalue().replace('\r\n', '\n'))
     with open(output_prefix + '-缺失零件.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
@@ -140,7 +141,7 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat[:,1] = part_id
         contMat[:,2] = part_name
         contMat[:,3] = quantity
-        contMat = npmat_truncate_cols(contMat, 12)
+        contMat = npmat_truncate_cols(contMat, 14) # magic number: only keep the first 14 columns of material list.
 
         csv_preprocess.npmat2csv(contMat, csv_buf)
 
