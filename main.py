@@ -43,8 +43,8 @@ def _main():
     index_material_name = 6
     index_arg_begin = 7
     index_addible = 10 # Ex: length is addible
-    index_amount = 12
-    index_comment = 13
+    index_amount = 13
+    index_comment = 12
     max_args = 3 # EXCLUDE addible arg, which is always the last one
     
     ignored_material_keywords = ['外购件'] # DO NOT contain junk_material_words, or it won't match.
