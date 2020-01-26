@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import math
+
 class material_class():
     def __init__(self, name, volume_calculator, density, meter_per_unit, is2d = False):
         '''
@@ -57,6 +59,13 @@ class material():
     def get_unit_amount(self, length):
         return self.m_class.get_unit_amount(length)
 
+def _calc_triangle_pipe_area(arg0, arg1):
+    sqrt2 = math.sqrt(2)
+    p = arg1 - (2+sqrt2) * arg0
+    area1 = arg0 * (sqrt2 * arg1 - arg0)
+    area2 = arg0 * (arg0 + p)
+    return area1 + 2 * area2
+
 material_class_list = [
     material_class('扁钢', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
     material_class('扁钢--易折弯', (lambda args, length: 1.00000 * args[0] * args[1] * length), 7850, 6),
@@ -71,7 +80,7 @@ material_class_list = [
     material_class( '方管' , (lambda args, length: 1.00000*4*args[0]*(args[1]-args[0])*length), 7850, 6), 
     material_class('不等边角钢', (lambda args, length: 1.01493*args[0]*(args[1]+args[2]-args[0])*length), 7850, 6), 
     material_class('等边角钢', (lambda args, length: 1.01493*args[0]*(args[1]+args[1]-args[0])*length), 7850, 6),
-    material_class('三角管', (lambda args, length: 1.00000*args[0]*args[1]*(2+1.4142)*length), 7850, 6),
+    material_class('三角管', (lambda args, length: 1.00000*_calc_triangle_pipe_area(args[0],args[1])*length), 7850, 6),
     material_class('三棱钢', (lambda args, length: 1.00000*args[0]*1000*length), 1, 6), # Be caution to its density! lambda is giving weight rather than volume!
 ]
 
