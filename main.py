@@ -189,7 +189,7 @@ def cut_extra_info_for_2dmaterial(csvName):
             niddle = name + ','
             if line[:len(niddle)] == niddle:
                 arg1 = line.split(',')[1]
-                newLine = niddle + arg1 + str_repeat(',', line.count(',')-1) + _get_summed_weight(cont, niddle+arg1)
+                newLine = niddle + arg1 + str_repeat(',', line.count(',')-1) + _get_summed_weight(cont, niddle+arg1+',')
                 if newLine in newLine_must_merge:
                     double_continue_flag = True
                     break
