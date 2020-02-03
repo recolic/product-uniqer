@@ -37,6 +37,8 @@ def execute_program_alpha(mypath, parent_arg1):
         raise RuntimeError('SubProcess returned in status ' + str(ret.returncode))
     print('EXEC SUBPROC EXITED =======================>')
 
+    os.remove(parent_arg1)
+
 
 
 
