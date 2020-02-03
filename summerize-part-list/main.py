@@ -37,6 +37,7 @@ import config, xlsx_conv, io
 import csv_preprocess
 import numpy as np
 from utils import *
+import beta2alpha
 csv_buf = io.StringIO()
 
 import logging
@@ -81,8 +82,8 @@ def _main():
 
     with open(output_prefix + '.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
-        f.write('序号,,,套数,单套数量,零件名称,材料规格,参数A,参数B,参数C,长度,单件重,备注\n')
-        f.write(csv_buf.getvalue().replace('\r\n', '\n'))
+        msg = '序号,,,套数,单套数量,零件名称,材料规格,参数A,参数B,参数C,长度,单件重,备注\n' + csv_buf.getvalue().replace('\r\n', '\n')
+        f.write(beta2alpha.csv_beta2alpha(msg))
     with open(output_prefix + '-缺失零件.csv', 'w+') as f:
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
         f.write('\n'.join(missing_parts))
