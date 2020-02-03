@@ -88,6 +88,8 @@ def _main():
         # Force windows NT use Linux LF. M$ office don't like CRLF csv.
         f.write('\n'.join(missing_parts))
 
+    beta2alpha.execute_program_alpha(sys.argv[0], output_prefix + '.csv')
+
 def get_part_metadata_from_csv_text(csvText):
     # Part Unique ID, Part Name
     try:

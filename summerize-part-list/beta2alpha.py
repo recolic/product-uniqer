@@ -2,7 +2,6 @@ def _stoi(s):
     # string to int
     return 0 if (s is None or s == '') else int(float(s))
 
-
 # convert BETA output csv, to match the format of ALPHA input format.
 def csv_beta2alpha(csvText):
     lines = csvText.split('\n')
@@ -21,7 +20,20 @@ def csv_beta2alpha(csvText):
     res += '__uniqer_end__\n'
     return res
 
-        
+import os, subprocess
+def execute_program_alpha(mypath, parent_arg1):
+    if not mypath.endswith('main.py'):
+        raise RuntimeError('CurrPath should end with `main.py`, but it is: ' + mypath)
+    par = os.path.abspath(mypath[:-7] + '../main.py')
+    print('EXEC =======================>', par, parent_arg1)
+    ret = subprocess.run([par, parent_arg1], capture_output=True)
+    for line in ret.stdout:
+        print(line)
+    if ret.returncode != 0:
+        raise RuntimeError('SubProcess returned in status ' + str(ret.returncode))
+    print('EXEC SUBPROC EXITED =======================>')
+
+
 
 
 
