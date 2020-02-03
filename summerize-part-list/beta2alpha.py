@@ -25,8 +25,12 @@ def execute_program_alpha(mypath, parent_arg1):
     if not mypath.endswith('main.py'):
         raise RuntimeError('CurrPath should end with `main.py`, but it is: ' + mypath)
     par = os.path.abspath(mypath[:-7] + '../main.py')
-    print('EXEC =======================>', par, parent_arg1)
-    ret = subprocess.run([par, parent_arg1], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    args = [par, parent_arg1]
+    if os.name == 'nt':
+        args = ['python'] + args
+
+    print('EXEC =======================>', args)
+    ret = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in ret.stdout:
         print(line)
     if ret.returncode != 0:
