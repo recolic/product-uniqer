@@ -154,12 +154,15 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
                 _dirty_subpart_name_counter[name] = 1 + _dirty_subpart_name_counter[name]
             else:
                 _dirty_subpart_name_counter[name] = 1
-            return _dirty_subpart_name_counter[name]
+            return str(_dirty_subpart_name_counter[name])
+        _new_contMat = np.matrix([[]], dtype=str)
         for line in contMat:
             line = line.tolist()[0]
             subpart_name = line[config.part_name_col_index]
             if get_id_prefix_from_string(subpart_name) == '':
-                contMat.itemset((), subpart_name + part_id + '-' + _get_subpart_name_count(subpart_name))
+                line[config.part_name_col_index] = subpart_name + part_id + '-' + _get_subpart_name_count(subpart_name)
+            _new_contMat = npmat_appendrow(_new_contMat, [line])
+        contMat = _new_contMat
         ############ dirty end
 
         csv_preprocess.npmat2csv(contMat, csv_buf)

@@ -15,7 +15,7 @@ def csv_beta2alpha(csvText):
             raise RuntimeError('Invalid line while performing BETA => ALPHA: ' + line)
 
         actual_quantity = str(_stoi(items[3]) * _stoi(items[4]))
-        res += '{},{}\n'.format(line.replace('"""','"'), actual_quantity)
+        res += '{},{}\n'.format(line.replace('"',''), actual_quantity)
 
     res += '__uniqer_end__\n'
     return res
