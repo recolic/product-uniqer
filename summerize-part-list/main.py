@@ -146,6 +146,22 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat[:,3] = quantity
         contMat = npmat_truncate_cols(contMat, 13) # magic number: only keep the first 13 columns of material list.
 
+        ############ dirty begin
+        # dirty part: append POSTFIX part_id to each part without PREFIX id. shitty, right?
+        _dirty_subpart_name_counter = {} # 'name' -> 3
+        def _get_subpart_name_count(name):
+            if name in _dirty_subpart_name_counter:
+                _dirty_subpart_name_counter[name] = 1 + _dirty_subpart_name_counter[name]
+            else:
+                _dirty_subpart_name_counter[name] = 1
+            return _dirty_subpart_name_counter[name]
+        for line in contMat:
+            line = line.tolist()[0]
+            subpart_name = line[config.part_name_col_index]
+            if get_id_prefix_from_string(subpart_name) == '':
+                contMat.itemset((), subpart_name + part_id + '-' + _get_subpart_name_count(subpart_name))
+        ############ dirty end
+
         csv_preprocess.npmat2csv(contMat, csv_buf)
 
         # recursive part reference
