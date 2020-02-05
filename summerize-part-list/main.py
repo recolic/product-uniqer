@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # A script to deal with product sheet. (see test-*.xlsx)
-# Copyright (C) 2018  Recolic Keghart <root@recolic.net>
+# Copyright (C) 2020  Recolic Keghart <root@recolic.net>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
