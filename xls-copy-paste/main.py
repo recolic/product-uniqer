@@ -127,8 +127,8 @@ def main(argv):
         os.startfile(config.dst_filename)
         if nt_err_msg != '':
             import tempfile
-            tf = tempfile.NamedTemporaryFile(suffix='.txt')
-            tf.write(nt_err_msg.encode('utf-8'))
+            with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as tf:
+                tf.write(nt_err_msg.encode('gb2312'))
             os.startfile(tf.name)
 
 
