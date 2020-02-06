@@ -97,8 +97,8 @@ def process_all(flist):
     delete_rows_below(output_xls_sheet, config.dst_ULcorner[0] + len(all_copied_data))
     output_xls.save(config.dst_filename)
 
-def main(argv):
-    logging.basicConfig(format='[%(asctime)s] %(message)s', level=logging.INFO)
+logging.basicConfig(format='[%(asctime)s] %(message)s', level=logging.INFO)
+def daemon_main(argv):
     logging.info('Daemon running...')
     prev_flist = set()
     while True:
@@ -109,6 +109,11 @@ def main(argv):
         prev_flist = flist
 
         time.sleep(config.daemon_loop_interval)
+
+def main(argv):
+    process_all(get_flist(config.src_dir_path))
+    if os.name == 'nt':
+        os.startfile(config.dst_filename)
 
 
 
