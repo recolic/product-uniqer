@@ -87,7 +87,9 @@ def process_all(flist):
         all_copied_data += enlarge_2darray_by_title(input_title, output_title, copied)
 
     # iterate over files
-    for fname in flist:
+    sorted_flist = list(flist)
+    sorted_flist.sort()
+    for fname in sorted_flist:
         process_one_src(fname)
 
     logging.info(all_copied_data)
