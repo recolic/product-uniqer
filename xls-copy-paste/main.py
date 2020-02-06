@@ -60,7 +60,8 @@ def get_flist(rootdir):
     for (dirpath, dirnames, filenames) in os.walk(rootdir):
         result += [dirpath + os.path.sep + fname for fname in filenames]
     # remove the output sheet
-    result = list(filter(lambda f: os.path.basename(config.dst_filename) not in f, result))
+    is_xlsx = lambda fname: fname.endswith('.xlsm') or fname.endswith('.xlsx') or fname.endswith('.xls') or fname.endswith('.XLSM') or fname.endswith('.XLSX') or fname.endswith('.XLS')
+    result = list(filter(lambda f: os.path.basename(config.dst_filename) not in f and is_xlsx(f), result))
     return set(result)
 
 # (x,y) means (rowIndex, colIndex)
