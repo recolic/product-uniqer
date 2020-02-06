@@ -128,7 +128,7 @@ def main(argv):
         if nt_err_msg != '':
             tmpName = '1.宝牧生产计划汇总缺项.txt'
             with open(tmpName, 'w+') as tf:
-                tf.write(nt_err_msg.encode('gb2312'))
+                tf.write(nt_err_msg)
             os.startfile(tmpName)
 
 
