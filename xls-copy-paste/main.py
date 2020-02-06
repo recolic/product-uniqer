@@ -31,6 +31,11 @@ def pasteRange(startRow, startCol, endRow, endCol, sheetReceiving, copiedData):
             countCol += 1
         countRow += 1
 
+def delete_rows_below(sheet, rowIndex):
+    # including rowIndex
+    sheet.delete_rows(rowIndex, sheet.max_row - rowIndex + 1)
+
+
 def enlarge_2darray_by_title(input_title, output_title, input_2darray):
     output_2darray = []
     
@@ -54,6 +59,8 @@ def get_flist(rootdir):
     result = []
     for (dirpath, dirnames, filenames) in os.walk(rootdir):
         result += [dirpath + os.path.sep + fname for fname in filenames]
+    # remove the output sheet
+    result = list(filter(lambda f: os.path.basename(config.dst_filename) not in f, result))
     return set(result)
 
 # (x,y) means (rowIndex, colIndex)
@@ -87,6 +94,7 @@ def process_all(flist):
         output_x, output_y = config.dst_ULcorner # starts from 1
         pasteRange(output_x, output_y, output_x + len(all_copied_data), output_y + len(all_copied_data[0]), output_xls_sheet, all_copied_data)
 
+    delete_rows_below(output_xls_sheet, config.dst_ULcorner[0] + len(all_copied_data))
     output_xls.save(config.dst_filename)
 
 def main(argv):

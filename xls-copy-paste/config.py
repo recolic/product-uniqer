@@ -10,9 +10,8 @@ src_cols = 3
 # dst may have cols: [A,B,C,D,E,F,G,H,I,J]
 dst_cols = 7
 
-src_dir_path = 'test/inputs/'
-template_filename = 'test/template.xlsx'
-dst_filename = 'test/output.xlsx'
+src_dir_path = 'test/'
+dst_filename = template_filename = 'test/output.xlsx'
 
 daemon_loop_interval = 5
 
