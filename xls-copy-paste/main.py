@@ -72,13 +72,13 @@ def process_all(flist):
     all_copied_data = []
 
     output_xls = openpyxl.load_workbook(config.template_filename)
-    output_xls_sheet = output_xls.active
+    output_xls_sheet = output_xls.worksheets[0]
     output_title = copyRange(config.dst_title_ULcorner[0], config.dst_title_ULcorner[1], config.dst_title_ULcorner[0]+1, config.dst_title_ULcorner[1]+config.dst_cols, output_xls_sheet)[0]
 
     def process_one_src(fname):
         global all_copied_data, nt_err_msg
         logging.info('Working on file ' + fname)
-        input_sheet = openpyxl.load_workbook(fname).active
+        input_sheet = openpyxl.load_workbook(fname).worksheets[0]
         x,y = init_x,init_y = config.src_ULcorner
         while input_sheet.cell(x, y).value != None and input_sheet.cell(x, y).value != '':
             x += 1
