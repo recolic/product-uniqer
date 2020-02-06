@@ -76,7 +76,7 @@ def process_all(flist):
     output_title = copyRange(config.dst_title_ULcorner[0], config.dst_title_ULcorner[1], config.dst_title_ULcorner[0]+1, config.dst_title_ULcorner[1]+config.dst_cols, output_xls_sheet)[0]
 
     def process_one_src(fname):
-        global all_copied_data
+        global all_copied_data, nt_err_msg
         logging.info('Working on file ' + fname)
         input_sheet = openpyxl.load_workbook(fname).active
         x,y = init_x,init_y = config.src_ULcorner
@@ -87,6 +87,11 @@ def process_all(flist):
         input_title = copyRange(config.src_title_ULcorner[0], config.src_title_ULcorner[1], config.src_title_ULcorner[0]+1, config.src_title_ULcorner[1]+config.src_cols, input_sheet)[0]
         copied, input_title = plugin_date.add_date_col(input_sheet.cell(1,1).value, copied, input_title) # dirty: generate date col.
         all_copied_data += enlarge_2darray_by_title(input_title, output_title, copied)
+
+        # silly error report
+        if list(filter(lambda ls: None in ls, copied)) != []:
+            # contains None
+            nt_err_msg += 'Found `None` in file ' + fname + '\r\n'
 
     # iterate over files
     sorted_flist = list(flist)
@@ -103,6 +108,7 @@ def process_all(flist):
     output_xls.save(config.dst_filename)
 
 logging.basicConfig(format='[%(asctime)s] %(message)s', level=logging.INFO)
+nt_err_msg = ''
 def daemon_main(argv):
     logging.info('Daemon running...')
     prev_flist = set()
@@ -119,6 +125,10 @@ def main(argv):
     process_all(get_flist(config.src_dir_path))
     if os.name == 'nt':
         os.startfile(config.dst_filename)
+        if nt_err_msg != '':
+            tf = tempfile.NamedTemporaryFile(suffix='.txt')
+            tf.write(nt_err_msg)
+            os.startfile(tf.name)
 
 
 
