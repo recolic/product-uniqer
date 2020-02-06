@@ -128,7 +128,7 @@ def main(argv):
         if nt_err_msg != '':
             import tempfile
             tf = tempfile.NamedTemporaryFile(suffix='.txt')
-            tf.write(nt_err_msg)
+            tf.write(nt_err_msg.encode('utf-8'))
             os.startfile(tf.name)
 
 
