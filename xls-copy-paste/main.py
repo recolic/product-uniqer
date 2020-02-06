@@ -126,10 +126,10 @@ def main(argv):
     if os.name == 'nt':
         os.startfile(config.dst_filename)
         if nt_err_msg != '':
-            import tempfile
-            with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as tf:
+            tmpName = '1.宝牧生产计划汇总缺项.txt'
+            with open(tmpName, 'w+') as tf:
                 tf.write(nt_err_msg.encode('gb2312'))
-            os.startfile(tf.name)
+            os.startfile(tmpName)
 
 
 
