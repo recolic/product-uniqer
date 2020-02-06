@@ -126,6 +126,7 @@ def main(argv):
     if os.name == 'nt':
         os.startfile(config.dst_filename)
         if nt_err_msg != '':
+            import tempfile
             tf = tempfile.NamedTemporaryFile(suffix='.txt')
             tf.write(nt_err_msg)
             os.startfile(tf.name)
