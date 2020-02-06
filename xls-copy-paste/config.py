@@ -8,7 +8,7 @@ dst_ULcorner = 3,1
 # src may have cols: [A,C,F,G,H], [C,E,F,G], ...
 src_cols = 3
 # dst may have cols: [A,B,C,D,E,F,G,H,I,J]
-dst_cols = 7
+dst_cols = 8
 
 src_dir_path = 'test/'
 dst_filename = template_filename = 'test/output.xlsx'

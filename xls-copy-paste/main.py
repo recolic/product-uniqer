@@ -64,6 +64,7 @@ def get_flist(rootdir):
     result = list(filter(lambda f: os.path.basename(config.dst_filename) not in f and is_xlsx(f), result))
     return set(result)
 
+import plugin_date
 # (x,y) means (rowIndex, colIndex)
 all_copied_data = []
 def process_all(flist):
@@ -84,6 +85,7 @@ def process_all(flist):
         copied = copyRange(init_x, init_y, x, y+config.src_cols, input_sheet)
 
         input_title = copyRange(config.src_title_ULcorner[0], config.src_title_ULcorner[1], config.src_title_ULcorner[0]+1, config.src_title_ULcorner[1]+config.src_cols, input_sheet)[0]
+        copied, input_title = plugin_date.add_date_col(input_sheet.cell(1,1).value, copied, input_title) # dirty: generate date col.
         all_copied_data += enlarge_2darray_by_title(input_title, output_title, copied)
 
     # iterate over files
