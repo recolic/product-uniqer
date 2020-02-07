@@ -31,7 +31,8 @@ def main(argv):
                 print('NOT_MATCH: {} != {}'.format(fl, libFile[0]))
                 out_csv.append('与库文件不匹配,{},!=,{}'.format(fl, libFile[0]))
 
-    with open('out.csv', 'w+') as f:
+    fname = os.path.dirname(argv[0]) + os.path.sep + 'out.csv'
+    with open(fname, 'w+') as f:
         f.write('\n'.join(out_csv)) # Windows M$ excel also not accepting \r\n
 
 
