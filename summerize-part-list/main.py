@@ -101,6 +101,7 @@ def get_part_metadata_from_csv_text(csvText):
 
 def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
     global csv_buf, missing_parts
+    _id = _id.replace(' ', '')
     print('ADD_PRODUCT: serial={}, _id={}, name={}, quantity={}'.format(serial, _id, name, quantity))
     # Search & read product/part file.
     found_pdf, found_xlsx = None, None
