@@ -19,12 +19,12 @@ def main(argv):
     for fl in get_flist(inputPath):
         libFile = list(filter(lambda f: os.path.basename(f) == os.path.basename(fl), libFlist))
         if len(libFile) == 0:
-            print('NOT_FOUND/未找到: {}'.format(fl))
+            print('NOT_FOUND: {}'.format(fl))
         elif len(libFile) > 1:
-            print('DUPLICATE/重复: 输入 `{}` 有多个候选人 `{}` 在库中.'.format(fl, libFile))
+            print('DUPLICATE: Input `{}` has multiple candidate `{}` in library.'.format(fl, libFile))
         else:
             if not fileEq(libFile[0], fl):
-                print('NOT_MATCH/文件内容不匹配: {} != {}'.format(fl, libFile[0]))
+                print('NOT_MATCH: {} != {}'.format(fl, libFile[0]))
 
     input('============== PRESS ENTER TO EXIT =============')
 
