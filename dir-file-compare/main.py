@@ -22,16 +22,16 @@ def main(argv):
         libFile = list(filter(lambda f: os.path.basename(f) == os.path.basename(fl), libFlist))
         if len(libFile) == 0:
             print('NOT_FOUND: {}'.format(fl))
-            out_csv.append('未找到,{}'.format(fl))
+            out_csv.append('未找到,{}'.format(os.path.basename(fl)))
         elif len(libFile) > 1:
             print('DUPLICATE: Input `{}` has multiple candidate `{}` in library.'.format(fl, libFile))
-            out_csv.append('库文件重复,{},重名库文件,{}'.format(fl, libFile))
+            out_csv.append('库文件重复,{},重名库文件,{}'.format(os.path.basename(fl), libFile))
         else:
             if not fileEq(libFile[0], fl):
                 print('NOT_MATCH: {} != {}'.format(fl, libFile[0]))
-                out_csv.append('与库文件不匹配,{},!=,{}'.format(fl, libFile[0]))
+                out_csv.append('与库文件不匹配,{}'.format(os.path.basename(fl)))
 
-    fname = config.working_dir + os.path.sep + 'out.csv'
+    fname = config.working_dir + os.path.sep + os.path.basename(inputPath) + '.csv'
     with open(fname, 'w+') as f:
         f.write('\n'.join(out_csv)) # Windows M$ excel also not accepting \r\n
 
