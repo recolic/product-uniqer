@@ -48,7 +48,11 @@ def trim_npArr(np_bi_arr):
             res.append(_trim_str(line))
         else:
             res.append([_trim_str(item) for item in line])
-    return np.array(res)
+    if len(res) == 0 or type(res[0]) != list:
+        return np.array([res])
+    else:
+        return np.array(res)
+
 
 import pandas
 

@@ -151,19 +151,22 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat = _new_contMat
         ############ dirty end
 
-        csv_preprocess.npmat2csv(contMat, csv_buf)
+        # moved down # csv_preprocess.npmat2csv(contMat, csv_buf)
 
-        # recursive part reference
-        if allow_recursive_part_ref:
-            for line in contMat:
-                line = line.tolist()[0]
-                part_name = line[config.part_name_col_index]
+        for line in contMat:
+            # recursive part reference
+            if allow_recursive_part_ref:
+                line_ar = line.tolist()[0]
+                part_name = line_ar[config.part_name_col_index]
                 part_id = get_id_prefix_from_string(part_name)
                 if part_id != '':
                     if part_id.startswith(_id):
                         log_warn('Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
                     else:
-                        add_product(serial, part_id, part_name, stoi(quantity)*stoi(line[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+                        add_product(serial, part_id, part_name, stoi(quantity)*stoi(line_ar[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference)
+                        continue # DO not put the parent material into csv_buf again!
+            # put line into csv_buf
+            csv_preprocess.npmat2csv(line, csv_buf)
     else:
         if must_have_xlsx:
             name_and_id = '{}({})'.format(name, _id)
