@@ -31,8 +31,7 @@ def execute_program_alpha(mypath, parent_arg1):
 
     print('EXEC =======================>', args)
     ret = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in ret.stdout:
-        print(line)
+    print(ret.stdout)
     if ret.returncode != 0:
         raise RuntimeError('SubProcess returned in status ' + str(ret.returncode))
     print('EXEC SUBPROC EXITED =======================>')

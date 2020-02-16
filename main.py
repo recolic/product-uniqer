@@ -14,7 +14,7 @@ if os.name == 'nt':
 from uniqer import *
 from utils import *
 import material
-import csv_preprocess
+import csv_preprocess, xlsx_conv
 import numpy as np
 from io import StringIO
     
@@ -36,8 +36,7 @@ def _main():
     junk_material_words = ['（厚）', '（宽）', '（单件重）']
     junk_part_words = []
     
-    with open(fname, mode='r') as fd:
-        fcontent = fd.read()
+    fcontent = xlsx_conv.read_as_csv(fname)
     fcontent = csv_preprocess.clean_csv(fcontent)
     fcontent = csv_preprocess.clean_csv_2(fcontent)
     
