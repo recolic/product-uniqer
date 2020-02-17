@@ -132,24 +132,25 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         contMat[:,3] = quantity
         contMat = npmat_truncate_cols(contMat, 13) # magic number: only keep the first 13 columns of material list.
 
-        ############ dirty begin
-        # dirty part: append POSTFIX part_id to each part without PREFIX id. shitty, right?
-        _dirty_subpart_name_counter = {} # 'name' -> 3
-        def _get_subpart_name_count(name):
-            if name in _dirty_subpart_name_counter:
-                _dirty_subpart_name_counter[name] = 1 + _dirty_subpart_name_counter[name]
-            else:
-                _dirty_subpart_name_counter[name] = 1
-            return str(_dirty_subpart_name_counter[name])
-        _new_contMat = np.matrix([[]], dtype=str)
-        for line in contMat:
-            line = line.tolist()[0]
-            subpart_name = line[config.part_name_col_index]
-            if get_id_prefix_from_string(subpart_name) == '':
-                line[config.part_name_col_index] = subpart_name + part_id + '-' + _get_subpart_name_count(subpart_name)
-            _new_contMat = npmat_appendrow(_new_contMat, [line])
-        contMat = _new_contMat
-        ############ dirty end
+        ############## dirty begin
+        ### dirty part: append POSTFIX part_id to each part without PREFIX id. shitty, right?
+        ##_dirty_subpart_name_counter = {} # 'name' -> 3
+        ##def _get_subpart_name_count(name):
+        ##    if name in _dirty_subpart_name_counter:
+        ##        _dirty_subpart_name_counter[name] = 1 + _dirty_subpart_name_counter[name]
+        ##    else:
+        ##        _dirty_subpart_name_counter[name] = 1
+        ##    return str(_dirty_subpart_name_counter[name])
+        ##_new_contMat = np.matrix([[]], dtype=str)
+        ##for line in contMat:
+        ##    line = line.tolist()[0]
+        ##    subpart_name = line[config.part_name_col_index]
+        ##    if get_id_prefix_from_string(subpart_name) == '':
+        ##        line[config.part_name_col_index] = subpart_name + part_id + '-' + _get_subpart_name_count(subpart_name)
+        ##    _new_contMat = npmat_appendrow(_new_contMat, [line])
+        ##contMat = _new_contMat
+        ############## dirty end
+        ## dirty part removed at 2020.02.17, unknown reason. backup it up, and do not remove this!
 
         # moved down # csv_preprocess.npmat2csv(contMat, csv_buf)
 
