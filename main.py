@@ -145,8 +145,8 @@ def _main():
     outputPartMat = npmat_appendrow(np.mat([partLine1, partLine2, partLineEmpty, partLineEmpty]), outputPartMat)
     
     # Ok. Enjoy!
-    materialFileName = fname[:-4] + '-材料表.csv'
-    partFileName = fname[:-4] + '-下料表.csv'
+    materialFileName = fname[:-4] + '-(材料表).csv'
+    partFileName = fname[:-4] + '-(下料表).csv'
     np.savetxt(materialFileName, outputMaterialMat, fmt='%s', delimiter=',')
     np.savetxt(partFileName, outputPartMat, fmt='%s', delimiter=',')
 
