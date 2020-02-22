@@ -38,6 +38,8 @@ def _main():
     
     fcontent = xlsx_conv.read_as_csv(fname)
     fcontent = csv_preprocess.clean_csv(fcontent)
+    if fcontent.strip() == '':
+        raise RuntimeError('Empty input rejected.')
     fcontent = csv_preprocess.clean_csv_2(fcontent)
     
     #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
