@@ -3,7 +3,8 @@
 import traceback
 def show_exception_and_exit(exc_type, exc_value, tb):
     traceback.print_exception(exc_type, exc_value, tb)
-    input("Press any key to exit.")
+    # input("Press any key to exit.")
+    # PROG BETA calls this program. do not block
     sys.exit(-1)
 
 import sys
