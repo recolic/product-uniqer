@@ -18,6 +18,15 @@ import material
 import csv_preprocess, xlsx_conv
 import numpy as np
 from io import StringIO
+
+def _dirty_func_return_empty_sheet(fname):
+    materialFileName = fname[:-4] + '-(材料表).csv'
+    partFileName = fname[:-4] + '-(下料表).csv'
+    with open(materialFileName, 'w+') as f:
+        f.write('空表')
+    with open(partFileName, 'w+') as f:
+        f.write('空表')
+    exit(0)
     
 def _main():
     if len(sys.argv) < 2:
@@ -40,7 +49,7 @@ def _main():
     fcontent = xlsx_conv.read_as_csv(fname)
     fcontent = csv_preprocess.clean_csv(fcontent)
     if fcontent.strip() == '':
-        raise RuntimeError('Empty input rejected.')
+        _dirty_func_return_empty_sheet(fname)
     fcontent = csv_preprocess.clean_csv_2(fcontent)
     
     #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
