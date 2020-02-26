@@ -1,9 +1,9 @@
 
-library_path = 'test/大牧人标准图库2020-1-8【单件库】'
+library_path = 'test/libs'
 working_dir = ''
 
 allow_part_tree_reference = False
-allow_part_recursive_reference = False # Not supported YET!
+allow_part_recursive_reference = False # Supported but disabled.
 tmp_prefix = '_python_tmp_prefix_'
 
 file_encoding = 'gb2312'

@@ -62,7 +62,8 @@ def _main():
         serial, product_id, product_name, quantity = line[0], line[1], line[2], line[3]
         print('[{}]Adding product {} {}({}) ...'.format(serial, quantity, product_name, product_id))
 
-        add_product(serial, product_id, product_name, quantity, must_have_xlsx=True) # first-level recursive is enabled
+        add_product(serial, product_id, product_name, quantity, must_have_xlsx=config.allow_part_tree_reference) # first-level recursive is enabled. Update: controlled by config, should never switched on.
+ 
     _magic_merge_missing_parts()
 
     with open(output_prefix + '.csv', 'w+') as f:
