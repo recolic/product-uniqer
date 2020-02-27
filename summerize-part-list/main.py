@@ -118,8 +118,8 @@ def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_pa
         name_and_id = '{}({})'.format(name, _id)
         log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id))
         missing_parts.append('{},{},{}'.format(_id, name, '少材料'))
- 
-    if load_xlsx:
+        # ERROR RETURN
+    elif load_xlsx:
         #try_copy(found_xlsx, config.output_dirname)
         # Write CSV
         csvIO = io.StringIO()
