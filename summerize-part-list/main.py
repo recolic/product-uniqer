@@ -62,7 +62,7 @@ def _main():
         serial, product_id, product_name, quantity = line[0], line[1], line[2], line[3]
         print('[{}]Adding product {} {}({}) ...'.format(serial, quantity, product_name, product_id))
 
-        add_product(serial, product_id, product_name, quantity, must_have_xlsx=True, allow_recursive_part_ref=config.allow_part_tree_reference) # first-level recursive is enabled. Update: controlled by config, should never switched on.
+        add_product(serial, product_id, product_name, quantity, load_xlsx=True, allow_recursive_part_ref=True) # first-level recursive is enabled.
  
     _magic_merge_missing_parts()
 
@@ -85,7 +85,7 @@ def get_part_metadata_from_csv_text(csvText):
         log_error("Error: Invalid csvText while parsing part_metadata")
         raise
 
-def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursive_part_ref=True):
+def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_part_ref=True):
     global csv_buf, missing_parts
     _id = _id.replace(' ', '')
     print('ADD_PRODUCT: serial={}, _id={}, name={}, quantity={}'.format(serial, _id, name, quantity))
@@ -114,7 +114,12 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
         # Found the product pdf.
         try_copy(found_pdf, config.output_dirname)
 
-    if found_xlsx is not None:
+    if load_xlsx and found_xlsx is None:
+        name_and_id = '{}({})'.format(name, _id)
+        log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id))
+        missing_parts.append('{},{},{}'.format(_id, name, '少材料'))
+ 
+    if load_xlsx:
         #try_copy(found_xlsx, config.output_dirname)
         # Write CSV
         csvIO = io.StringIO()
@@ -165,15 +170,11 @@ def add_product(serial, _id, name, quantity, must_have_xlsx=False, allow_recursi
                     if part_id.startswith(_id):
                         log_warn('Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
                     else:
-                        if add_product(serial, part_id, part_name, stoi(quantity)*stoi(line_ar[config.part_quantity_col_index]), allow_recursive_part_ref=config.allow_part_tree_reference): # If found sub-part xlsx:
+                        if add_product(serial, part_id, part_name, stoi(quantity)*stoi(line_ar[config.part_quantity_col_index]), load_xlsx=config.allow_part_tree_reference, allow_recursive_part_ref=config.allow_part_tree_reference): # If found sub-part xlsx:
                             continue # DO not put the parent material into csv_buf again!
             # put line into csv_buf
             csv_preprocess.npmat2csv(line, csv_buf)
-    else:
-        if must_have_xlsx:
-            name_and_id = '{}({})'.format(name, _id)
-            log_error('Error: Unable to find xls for {} (xls/xlsm/xlsx)'.format(name_and_id))
-            missing_parts.append('{},{},{}'.format(_id, name, '少材料'))
+
     print('ADD_PRODUCT END. found_xlsx =', found_xlsx)
     return found_xlsx
 
