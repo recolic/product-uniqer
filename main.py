@@ -50,6 +50,8 @@ def _main():
     fcontent = csv_preprocess.clean_csv(fcontent)
     if fcontent.strip() == '':
         _dirty_func_return_empty_sheet(fname)
+        # Although the following code supports empty sheet, but empty sheet still causes wrong-formatted output.
+        # To make it easy, still enable this dirty function
     fcontent = csv_preprocess.clean_csv_2(fcontent)
     
     #contArr = np.loadtxt(StringIO(fcontent), delimiter=',', dtype=str)
@@ -60,6 +62,8 @@ def _main():
     # Clean junk words
     cleanedMat = np.matrix([[]], dtype=str)
     for line in contArr:
+        if line.size == 0:
+            continue # empty sheet
         for word in junk_material_words:
             if word in line[index_material_name]:
                 line[index_material_name] = line[index_material_name].replace(word, '')
@@ -74,6 +78,8 @@ def _main():
     toSumMat = np.matrix([[]], dtype=str)
     ignoredMat = np.matrix([[]], dtype=str)
     for line in contArr:
+        if line.size == 0:
+            continue # empty sheet
         ignored = False
         for keyword in ignored_material_keywords:
             if keyword in line[index_material_name]:
@@ -98,6 +104,8 @@ def _main():
     # tidify material list
     newMaterialList = [] # Tip: ignored materials are still ignored.
     for line in np.array(sumedMaterialListMat).tolist():
+        if line == []:
+            continue # empty sheet
         newLine = [line[index_material_name]]
         newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
     
@@ -118,6 +126,8 @@ def _main():
     # tidify part list
     newPartList = []
     for line in np.array(sumedPartListMat).tolist():
+        if line == []:
+            continue # empty sheet
         newLine = [line[index_part_name], line[index_material_name]]
         newLine.extend(line[index_arg_begin:index_arg_begin+max_args])
         newLine.append(line[index_addible])
