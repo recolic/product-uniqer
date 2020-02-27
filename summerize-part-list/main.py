@@ -170,13 +170,13 @@ def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_pa
                     if part_id.startswith(_id):
                         log_warn('Self-reference detected on part {}. Skipping recursive walking.'.format(_id))
                     else:
-                        if add_product(serial, part_id, part_name, stoi(quantity)*stoi(line_ar[config.part_quantity_col_index]), load_xlsx=config.allow_part_tree_reference, allow_recursive_part_ref=config.allow_part_tree_reference): # If found sub-part xlsx:
+                        if add_product(serial, part_id, part_name, stoi(quantity)*stoi(line_ar[config.part_quantity_col_index]), load_xlsx=config.allow_part_tree_reference, allow_recursive_part_ref=config.allow_part_tree_reference): # If already included sub-part xlsx:
                             continue # DO not put the parent material into csv_buf again!
             # put line into csv_buf
             csv_preprocess.npmat2csv(line, csv_buf)
 
-    print('ADD_PRODUCT END. found_xlsx =', found_xlsx)
-    return found_xlsx
+    print('ADD_PRODUCT END. found_xlsx =', found_xlsx, ', load_xlsx=', load_xlsx)
+    return found_xlsx != None and load_xlsx
 
 def _magic_merge_missing_parts():
     global missing_parts
