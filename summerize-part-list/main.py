@@ -88,6 +88,10 @@ def get_part_metadata_from_csv_text(csvText):
 def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_part_ref=True):
     global csv_buf, missing_parts
     _id = _id.replace(' ', '')
+    _dirty_name_ends_with_star = name.endswith('*')
+    if _dirty_name_ends_with_star:
+        name = name[:-1]
+
     print('ADD_PRODUCT: serial={}, _id={}, name={}, quantity={}'.format(serial, _id, name, quantity))
     # Search & read product/part file.
     found_pdf, found_xlsx = None, None
@@ -109,7 +113,10 @@ def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_pa
     if found_pdf is None:
         name_and_id = '{}({})'.format(name, _id)
         log_error('Unable to locate part `{}` in `{}`, with search_only_top_level_directory={}.'.format(name_and_id, config.library_path, config.search_only_top_level_directory))
-        missing_parts.insert(0, '{},{},{}'.format(_id, name, '少图')) # PDF should always appear in front of XLSx.
+        if _dirty_name_ends_with_star:
+            log_error('Not recording to missing_parts because of tailing star.')
+        else:
+            missing_parts.insert(0, '{},{},{}'.format(_id, name, '少图')) # PDF should always appear in front of XLSx.
     else:
         # Found the product pdf.
         try_copy(found_pdf, config.output_dirname)
