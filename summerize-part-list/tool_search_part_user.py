@@ -33,7 +33,7 @@ def main():
     target_id = utils.get_id_prefix_from_string(target_filename)
     results = []
 
-    print('Iterating... Please wait...')
+    print('Iterating... Please wait... (searching for', target_id)
     is_xlsx = lambda fname: fname.endswith('.xlsm') or fname.endswith('.xlsx') or fname.endswith('.xls') or fname.endswith('.XLSM') or fname.endswith('.XLSX') or fname.endswith('.XLS')
     for (dirpath, dirnames, filenames) in os.walk(config.library_path):
         for fname in filenames:
@@ -47,6 +47,8 @@ def main():
         os.chdir(config.working_dir)
     print(results)
     with open(target_id + '被引用处.csv', 'w+') as f:
+        if len(results) == 0:
+            results = ['找不到任何引用']
         f.write(',\n'.join(results))
 
 main()
