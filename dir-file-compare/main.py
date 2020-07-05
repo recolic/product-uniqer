@@ -20,8 +20,10 @@ def main(argv):
     libFlist = get_flist(config.library_path)
     out_csv = []
 
+    print('WARNING: Case-insenstive matching.')
+
     for fl in get_flist(inputPath):
-        libFile = list(filter(lambda f: os.path.basename(f) == os.path.basename(fl), libFlist))
+        libFile = list(filter(lambda f: os.path.basename(f).lower() == os.path.basename(fl).lower(), libFlist))
         if len(libFile) == 0:
             print('NOT_FOUND: {}'.format(fl))
             out_csv.append('未找到,{}'.format(fuck(fl)))
