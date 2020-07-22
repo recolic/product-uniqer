@@ -100,7 +100,7 @@ def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_pa
 
     for (dirpath, dirnames, filenames) in os.walk(config.library_path):
         for fname in filenames:
-            if fname.startswith(_id):
+            if fname.lower().startswith(_id.lower()):
                 if is_pdf(fname):
                     found_pdf = dirpath + os.path.sep + fname
                 elif is_xlsx(fname):
