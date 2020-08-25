@@ -35,6 +35,26 @@ def log_error(msg):
 def log_warn(msg):
     print('Warning:', msg)
 
+def pdf_sorter_init(targetPath):
+    # FR 20200825: sort output pdf basing on input part list. 
+    try:
+        shutil.rmtree(targetPath)
+    except:
+        pass
+    os.mkdir(targetPath)
+_hook_storage = []
+def pdf_sorter_reach_pdf(pdfPath, targetPath):
+    # input pdfpath: readonly. 
+    # FR 20200825: sort output pdf basing on input part list. 
+    if pdfPath in _hook_storage:
+        return # only deal the first occurence. 
+    else:
+        _hook_storage.append(pdfPath)
+    myLoid = len(_hook_storage) - 1 # starts from 0
+    myPrefix = 'LoID{0:05d}-'.format(myLoid)
+    myTargetFilename = myPrefix + os.path.basename(pdfPath)
+    try_copy(pdfPath, targetPath, myTargetFilename)
+
 missing_parts = []
 def _main():
     if len(sys.argv) < 2:
@@ -56,6 +76,7 @@ def _main():
     contMat = np.mat(contArr)
 
     os.mkdir(config.output_dirname)
+    pdf_sorter_init(config.output_dirname + '-sorted')
 
     for line in contMat:
         line = line.tolist()[0]
@@ -120,6 +141,7 @@ def add_product(serial, _id, name, quantity, load_xlsx=False, allow_recursive_pa
     else:
         # Found the product pdf.
         try_copy(found_pdf, config.output_dirname)
+        pdf_sorter_reach_pdf(found_pdf, config.output_dirname + '-sorted')
 
     if load_xlsx and found_xlsx is None:
         name_and_id = '{}({})'.format(name, _id)
