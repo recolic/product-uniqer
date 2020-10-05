@@ -23,9 +23,13 @@ import config, xlsx_conv, utils
 
 def main():
     def contains_id(fname, _id):
-        s = xlsx_conv.read_as_csv(fname)
-        s = s.replace(' ', '').replace(',', '')
-        return s.find(_id) != -1
+        try:
+            s = xlsx_conv.read_as_csv(fname)
+            s = s.replace(' ', '').replace(',', '')
+            return s.find(_id) != -1
+        except:
+            # Catch PermissionError etc. 
+            return False
 
     if len(sys.argv) == 1:
         raise RuntimeError('Usage: drag a file into me...')
