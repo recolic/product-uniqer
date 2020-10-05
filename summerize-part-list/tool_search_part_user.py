@@ -26,7 +26,7 @@ def main():
         try:
             s = xlsx_conv.read_as_csv(fname)
             s = s.replace(' ', '').replace(',', '')
-            return s.find(_id) != -1
+            return s.lower().find(_id.lower()) != -1
         except:
             # Catch PermissionError etc. 
             return False
