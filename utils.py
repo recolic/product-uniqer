@@ -40,7 +40,7 @@ def npmat_truncate_cols(mat, max_cols):
 def get_id_prefix_from_string(s):
     first_illegal_char_index = 0
     for i, c in enumerate(s):
-        if c not in 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm-':
+        if c not in 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm-.':
             break
         else:
             first_illegal_char_index = i + 1
