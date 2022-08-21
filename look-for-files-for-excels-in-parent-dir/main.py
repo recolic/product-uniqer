@@ -36,7 +36,7 @@ def list_partnames_to_lookfor(xlsxPath):
             for colnum, ele in enumerate(row):
                 # if ele.value is not None:
                 #     print("TRY: ", ele.value)
-                if ele.value is str and ele.value.strip() == NAME_COLNAME.strip():
+                if ele.value == NAME_COLNAME:
                     name_colnum = colnum
                     break
     if name_colnum == -1:
