@@ -83,7 +83,7 @@ def main():
             print("DEBUG: missing_part_this=", mpthis)
             missing_parts += mpthis
 
-            print("COPY from " + f + " TO " + toDir)
+            print("COPY from " + f + " TO " + dest_dirname)
             shutil.copy(f, dest_dirname)
     if len(missing_parts) > 0:
         with open('缺失零件.csv', 'w+') as f:
