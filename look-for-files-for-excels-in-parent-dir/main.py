@@ -82,6 +82,9 @@ def main():
             mpthis = copy_files_from_dir_to_dir_with_displayname('..', dest_dirname, partnames)
             print("DEBUG: missing_part_this=", mpthis)
             missing_parts += mpthis
+
+            print("COPY from " + f + " TO " + toDir)
+            shutil.copy(f, dest_dirname)
     if len(missing_parts) > 0:
         with open('缺失零件.csv', 'w+') as f:
             f.write('\n'.join(missing_parts))
