@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# A script to deal with product sheet. (see test-*.csv)
+# see README for usage
 import traceback
 def show_exception_and_exit(exc_type, exc_value, tb):
     traceback.print_exception(exc_type, exc_value, tb)
