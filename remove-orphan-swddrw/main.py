@@ -15,6 +15,8 @@ if os.name == 'nt':
 #########################################################################
 
 import os, shutil
+if os.name == 'nt':
+    from send2trash import send2trash
 
 def main():
     print("DEBUG: workdir=", os.getcwd())
@@ -24,7 +26,7 @@ def main():
     filesl = [f.lower() for f in os.listdir('.') if os.path.isfile(f)]
     for f in files:
         if is_drw(f):
-            print("CHECKING ", f)
+            #print("CHECKING ", f)
 
             ext_len = len('.slddrw')
             expecting1 = f[:-ext_len] + '.sldprt'
@@ -35,11 +37,13 @@ def main():
             else:
                 # delete this file
                 print("DELETE ", f)
-                os.remove(f)
+                if os.name == 'nt':
+                    send2trash(f)
+                else:
+                    os.remove(f)
 
 
 main()
-input("按回车键退出")
 
 
 
